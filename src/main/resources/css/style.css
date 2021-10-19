@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400&display=swap');
+/*@font-face {*/
+/*    font-family: 'supermarket';*/
+/*    src: url('supermarket.ttf');*/
+/*}*/
+.text{
+    -fx-font-family: 'Noto Sans Thai';
+    -fx-font-size: 28;
+    -fx-alignment: center;
+    -fx-margin : auto;
+}
