@@ -1,0 +1,18 @@
+.btn-login{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 22px;
+    -fx-background-color : white;
+    -fx-border-color:#61BDF6;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-border-width: 3px;
+}
+.btn-login:hover{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 22px;
+    -fx-background-color: #61BDF6;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+    -fx-border-width: 3px;
+    -fx-border-color: white;
+}

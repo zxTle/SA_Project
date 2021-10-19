@@ -1,11 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400&display=swap');
-/*@font-face {*/
-/*    font-family: 'supermarket';*/
-/*    src: url('supermarket.ttf');*/
-/*}*/
+/*@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400&display=swap');*/
 .text{
-    -fx-font-family: 'Noto Sans Thai';
-    -fx-font-size: 28;
+    -fx-font-family: 'Kanit';
     -fx-alignment: center;
-    -fx-margin : auto;
 }
+.fill{
+    -fx-font-family: 'Kanit';
+    -fx-alignment: center;
+}
+.field{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 20px;
+}
+
+.head{
+    -fx-font-family: 'Barlow';
+}
+
+
