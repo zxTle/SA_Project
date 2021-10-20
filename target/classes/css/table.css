@@ -1,0 +1,42 @@
+
+.table {
+    -fx-background-color : #081F37;
+}
+.table .column-header-background {
+    -fx-background-color : #1E549F;
+}
+
+.table .column-header-background .label {
+    -fx-background-color : transparent;
+    -fx-text-fill : white;
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 20px;
+    -fx-pref-height: 70px;
+    -fx-text-alignment: center;
+}
+
+.table .column-header{
+    -fx-background-color : transparent;
+}
+.table .table-cell{
+    -fx-text-fill : #48466D;
+    -fx-font-family: 'Kanit';
+    -fx-pref-height : 40;
+}
+/*.table-row-cell{*/
+/*    -fx-background-color : -fx-table-cell-border-color , #6EF3D6;*/
+/*    -fx-font-family: 'Bai Jamjuree';*/
+/*    -fx-font-size: 18;*/
+/*}*/
+
+/*.table-row-cell:odd {*/
+/*    -fx-background-color : -fx-table-cell-border-color , #C6FCE5;*/
+/*    -fx-font-family: 'Bai Jamjuree';*/
+/*    -fx-font-size: 18;*/
+/*}*/
+
+.table-row-cell:hover{
+    -fx-background-color: #61BDF6;
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 18;
+}

@@ -16,4 +16,12 @@
     -fx-font-family: 'Barlow';
 }
 
+.position{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 30px;
+}
+.normal_font{
+    -fx-font-family: 'Kanit';
+}
+
 
