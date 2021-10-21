@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -62,39 +63,57 @@
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow color="#00000080" />
+               </effect>
             </Button>
             <Button layoutX="-1.0" layoutY="456.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="สั่งซื้อสินค้าเข้าคลัง">
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow color="#00000080" />
+               </effect>
             </Button>
             <Button layoutX="-1.0" layoutY="707.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="ออกจากระบบ">
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow color="#00000080" />
+               </effect>
             </Button>
             <Button layoutX="-1.0" layoutY="519.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รับสินค้าเข้าคลัง">
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow color="#00000080" />
+               </effect>
             </Button>
             <Button layoutX="-1.0" layoutY="582.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รายการใบเคลม">
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow color="#00000080" />
+               </effect>
             </Button>
             <Button layoutX="-1.0" layoutY="330.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รายการสินค้าในคลัง">
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow color="#00000080" />
+               </effect>
             </Button>
          </children>
       </Pane>
       <Pane layoutX="317.0" layoutY="-2.0" prefHeight="775.0" prefWidth="970.0" style="-fx-background-color: #081F37;">
          <children>
-            <Pane layoutX="55.0" layoutY="22.0" prefHeight="50.0" prefWidth="207.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+            <Pane layoutX="55.0" layoutY="22.0" prefHeight="50.0" prefWidth="248.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
                <children>
-                  <Label alignment="CENTER" layoutX="37.0" layoutY="10.0" prefHeight="30.0" prefWidth="134.0" text="รายการใบรับของ">
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" styleClass="text" stylesheets="@css/style.css" text="รายการใบรับของ">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -124,7 +143,7 @@
                   <Font size="1.0" />
                </font>
             </Button>
-            <TableView layoutY="97.0" prefHeight="677.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
+            <TableView layoutY="84.0" prefHeight="691.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
               <columns>
                 <TableColumn prefWidth="182.0" text="เลขที่ใบรับของ" />
                 <TableColumn prefWidth="207.0" text="เลขที่ใบสั่งซื้อ" />
