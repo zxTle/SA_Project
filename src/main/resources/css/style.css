@@ -24,4 +24,17 @@
     -fx-font-family: 'Kanit';
 }
 
+.show_label{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 25px;
+}
+.show_field{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 20px;
+    -fx-text-fill: #081F37;
+}
+.area-field{
+    -fx-background-color: #61BDF6;
+    -fx-background-radius: 50px;
+}
 
