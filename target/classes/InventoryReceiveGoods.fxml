@@ -26,12 +26,12 @@
                   </Label>
                </children>
             </Pane>
-            <Label alignment="CENTER" layoutX="48.0" layoutY="161.0" prefHeight="30.0" prefWidth="222.0" text="Date">
+            <Label alignment="CENTER" layoutX="48.0" layoutY="136.0" prefHeight="30.0" prefWidth="222.0" text="Date">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Pane layoutX="59.0" layoutY="231.0" prefHeight="38.0" prefWidth="200.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
+            <Pane layoutX="59.0" layoutY="193.0" prefHeight="38.0" prefWidth="200.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
                <children>
                   <Label alignment="CENTER" layoutX="33.0" layoutY="4.0" prefHeight="30.0" prefWidth="134.0" text="Username" textFill="WHITE">
                      <font>
@@ -40,9 +40,9 @@
                   </Label>
                </children>
             </Pane>
-            <Pane layoutX="59.0" layoutY="296.0" prefHeight="38.0" prefWidth="200.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
+            <Pane layoutX="59.0" layoutY="257.0" prefHeight="38.0" prefWidth="200.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
                <children>
-                  <Label layoutX="65.0" layoutY="4.0" prefHeight="30.0" prefWidth="116.0" text="Kanrawee" textFill="WHITE">
+                  <Label layoutX="65.0" layoutY="4.0" prefHeight="30.0" prefWidth="116.0" text="name" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -54,17 +54,32 @@
                   </ImageView>
                </children>
             </Pane>
-            <Button layoutX="-1.0" layoutY="396.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" text="รายการใบเบิก">
+            <Button layoutX="-1.0" layoutY="393.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" text="รายการใบเบิก">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button layoutX="-1.0" layoutY="459.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" text="สร้างใบเบิก">
+            <Button layoutX="-1.0" layoutY="456.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" text="สั่งซื้อสินค้าเข้าคลัง">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
             <Button layoutX="-1.0" layoutY="707.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" text="ออกจากระบบ">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button layoutX="-1.0" layoutY="519.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" text="รับสินค้าเข้าคลัง">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button layoutX="-1.0" layoutY="582.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" text="รายการใบเคลม">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button layoutX="-1.0" layoutY="330.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" text="รายการสินค้าในคลัง">
                <font>
                   <Font size="20.0" />
                </font>
