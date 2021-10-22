@@ -19,7 +19,7 @@
          <children>
             <Pane layoutX="25.0" layoutY="30.0" prefHeight="70.0" prefWidth="267.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
                <children>
-                  <Label alignment="CENTER" layoutX="118.0" layoutY="13.0" prefHeight="45.0" prefWidth="108.0" styleClass="position" stylesheets="@css/style.css" text="ฝ่ายคลัง" textAlignment="CENTER" textFill="WHITE">
+                  <Label alignment="CENTER" layoutX="109.0" layoutY="17.0" prefHeight="27.0" prefWidth="89.0" text="ฝ่ายคลัง" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -31,7 +31,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Label alignment="CENTER" layoutX="48.0" layoutY="136.0" prefHeight="30.0" prefWidth="222.0" styleClass="text" stylesheets="@css/style.css" text="Date">
+            <Label alignment="CENTER" layoutX="48.0" layoutY="136.0" prefHeight="30.0" prefWidth="222.0" text="Date">
                <font>
                   <Font size="20.0" />
                </font>
@@ -113,14 +113,14 @@
          <children>
             <Pane layoutX="55.0" layoutY="22.0" prefHeight="50.0" prefWidth="248.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
                <children>
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="7.0" prefHeight="30.0" prefWidth="200.0" styleClass="show_label" stylesheets="@css/style.css" text="รายการใบรับของ">
+                  <Label alignment="CENTER" layoutX="24.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" styleClass="text" stylesheets="@css/style.css" text="รายการใบสั่งซื้อสินค้า">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
                </children>
             </Pane>
-            <TextField layoutX="445.0" layoutY="21.0" prefHeight="47.0" prefWidth="248.0" promptText="ค้นหาใบรับของ.." style="-fx-border-color: #61BDF6; -fx-border-width: 3px; -fx-border-radius: 50px; -fx-background-radius: 50px;" styleClass="field" stylesheets="@css/style.css">
+            <TextField layoutX="445.0" layoutY="21.0" prefHeight="47.0" prefWidth="248.0" promptText="ค้นหาใบสั่งซื้อ" style="-fx-border-color: #61BDF6; -fx-border-width: 3px; -fx-border-radius: 50px; -fx-background-radius: 50px;" styleClass="field" stylesheets="@css/style.css">
                <font>
                   <Font size="20.0" />
                </font>
@@ -138,19 +138,22 @@
                   <Image url="@image/search-dollar-solid.png" />
                </image>
             </ImageView>
-            <Button alignment="CENTER" layoutX="840.0" layoutY="22.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="116.0" styleClass="btn-top" stylesheets="@css/button.css" text="กลับ" textFill="#081f37">
+            <Button alignment="CENTER" layoutX="840.0" layoutY="22.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="116.0" styleClass="btn-top" stylesheets="@css/button.css" text="ดูใบรับของ" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
             </Button>
-            <TableView layoutY="84.0" prefHeight="691.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
-              <columns>
-                <TableColumn prefWidth="182.0" text="เลขที่ใบรับของ" />
-                <TableColumn prefWidth="207.0" text="เลขที่ใบสั่งซื้อ" />
-                  <TableColumn prefWidth="200.0" text="วันที่รับของ" />
-                  <TableColumn prefWidth="380.0" text="ผู้รับของ" />
-              </columns>
+            <TableView layoutY="84.0" prefHeight="690.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
+               <columns>
+                  <TableColumn prefWidth="182.0" text="เลขที่ใบสั่งซื้อ" />
+                  <TableColumn prefWidth="207.0" text="วันที่ออกใบสั่งซื้อ" />
+                  <TableColumn prefWidth="200.0" text="ผู้ออกใบสั่งซื้อ" />
+                  <TableColumn prefWidth="151.0" text="ผู้รับของ" />
+                  <TableColumn prefWidth="123.0" text="สถานะ" />
+                  <TableColumn prefWidth="107.0" />
+               </columns>
             </TableView>
-         </children></Pane>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
