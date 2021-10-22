@@ -125,7 +125,7 @@
                   <Font size="20.0" />
                </font>
             </TextField>
-            <Button alignment="TOP_RIGHT" layoutX="709.0" layoutY="22.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="116.0" styleClass="btn-top" stylesheets="@css/button.css" text="ค้นหา" textFill="#081f37">
+            <Button alignment="CENTER_RIGHT" layoutX="709.0" layoutY="22.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="116.0" styleClass="btn-top" stylesheets="@css/button.css" text="ค้นหา" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
