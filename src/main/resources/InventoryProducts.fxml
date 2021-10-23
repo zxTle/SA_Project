@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -143,7 +144,7 @@
             <Pane layoutX="57.0" layoutY="152.0" prefHeight="47.0" prefWidth="462.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
                <children>
                   <Label layoutX="35.0" layoutY="5.0" prefHeight="36.0" prefWidth="113.0" styleClass="show_label" stylesheets="@css/style.css" text="ชื่อสินค้า :" />
-                  <TextField disable="true" layoutX="152.0" layoutY="2.0" prefHeight="37.0" prefWidth="265.0" promptText="ชื่อสินค้า" style="-fx-background-radius: 50px; -fx-background-color: #61BDF6;" styleClass="show_field" stylesheets="@css/style.css" text="ชื่อสินค้า" />
+                  <TextField fx:id="productName" disable="true" layoutX="152.0" layoutY="2.0" prefHeight="37.0" prefWidth="265.0" promptText="ชื่อสินค้า" style="-fx-background-radius: 50px; -fx-background-color: #61BDF6;" styleClass="show_field" stylesheets="@css/style.css" text="ชื่อสินค้า" />
                </children>
             </Pane>
             <Pane layoutX="57.0" layoutY="228.0" prefHeight="47.0" prefWidth="462.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
@@ -156,7 +157,21 @@
                   <Label layoutX="30.0" layoutY="4.0" prefHeight="36.0" prefWidth="141.0" styleClass="show_label" stylesheets="@css/style.css" text="คุณสมบัติ :" />
                </children>
             </Pane>
-            <TextArea layoutX="61.0" layoutY="396.0" prefHeight="294.0" prefWidth="649.0" styleClass="area-field" stylesheets="@css/style.css" />
+            <TextArea fx:id="productSpec" disable="true" layoutX="57.0" layoutY="384.0" prefHeight="294.0" prefWidth="649.0" styleClass="area-field" stylesheets="@css/style.css" text="คุณสมบัติสินค้า" wrapText="true">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </TextArea>
+            <Button fx:id="EditBtn" layoutX="570.0" layoutY="55.0" mnemonicParsing="false" onAction="#handleEditPageClick" prefHeight="47.0" prefWidth="125.0" styleClass="btn-top" stylesheets="@css/button.css" text="แก้ไข">
+               <graphic>
+                  <ImageView fx:id="icon" fitHeight="28.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@image/pencil-alt-solid.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="BackBtn" layoutX="712.0" layoutY="55.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="85.0" styleClass="btn-top" stylesheets="@css/button.css" text="กลับ" />
          </children>
       </Pane>
       <Pane layoutX="317.0" layoutY="-2.0" prefHeight="775.0" prefWidth="970.0" style="-fx-background-color: #081F37;">
@@ -166,7 +181,7 @@
                   <Font size="20.0" />
                </font>
             </TextField>
-            <Button fx:id="searchBtn" layoutX="685.0" layoutY="16.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="108.0" styleClass="btn-top" stylesheets="@css/button.css" text="ค้นหา" textFill="#081f37">
+            <Button fx:id="searchBtn" layoutX="689.0" layoutY="18.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="113.0" styleClass="btn-top" stylesheets="@css/button.css" text="ค้นหา" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
@@ -188,7 +203,7 @@
                   <TableColumn fx:id="productAvailTb" minWidth="20.0" prefWidth="100.2666015625" text="จำนวนคงเหลือ" />
                </columns>
             </TableView>
-            <Button layoutX="805.0" layoutY="16.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" styleClass="btn-top" stylesheets="@css/button.css" text="เพิ่มสินค้าใหม่">
+            <Button layoutX="810.0" layoutY="19.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="150.0" styleClass="btn-top" stylesheets="@css/button.css" text="เพิ่มสินค้าใหม่">
                <font>
                   <Font size="1.0" />
                </font></Button>
