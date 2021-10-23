@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -19,7 +19,7 @@
          <children>
             <Pane layoutX="25.0" layoutY="30.0" prefHeight="70.0" prefWidth="267.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
                <children>
-                  <Label alignment="CENTER" layoutX="109.0" layoutY="17.0" prefHeight="27.0" prefWidth="89.0" text="ฝ่ายคลัง" textAlignment="CENTER" textFill="WHITE">
+                  <Label alignment="CENTER" layoutX="120.0" layoutY="13.0" prefHeight="45.0" prefWidth="107.0" styleClass="position" stylesheets="@css/style.css" text="ฝ่ายคลัง" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -31,7 +31,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Label alignment="CENTER" layoutX="48.0" layoutY="136.0" prefHeight="30.0" prefWidth="222.0" text="Date">
+            <Label alignment="CENTER" layoutX="48.0" layoutY="136.0" prefHeight="30.0" prefWidth="222.0" styleClass="text" stylesheets="@css/style.css" text="Date">
                <font>
                   <Font size="20.0" />
                </font>
@@ -111,21 +111,21 @@
       </Pane>
       <Pane layoutX="317.0" layoutY="-2.0" prefHeight="775.0" prefWidth="970.0" style="-fx-background-color: #081F37;">
          <children>
-            <Pane layoutX="55.0" layoutY="22.0" prefHeight="50.0" prefWidth="248.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+            <Pane layoutX="55.0" layoutY="31.0" prefHeight="70.0" prefWidth="577.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
                <children>
-                  <Label alignment="CENTER" layoutX="24.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0" styleClass="text" stylesheets="@css/style.css" text="รายการใบรับของ">
+                  <Label alignment="CENTER" layoutX="78.0" layoutY="10.0" prefHeight="50.0" prefWidth="210.0" styleClass="position" stylesheets="@css/style.css" text="เลขที่ใบรับของ : ">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="38.0" fitWidth="42.0" layoutX="28.0" layoutY="16.0">
+                     <image>
+                        <Image url="@image/dolly-solid.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
-            <TextField layoutX="445.0" layoutY="21.0" prefHeight="47.0" prefWidth="248.0" promptText="ค้นหาใบสั่งซื้อ" style="-fx-border-color: #61BDF6; -fx-border-width: 3px; -fx-border-radius: 50px; -fx-background-radius: 50px;" styleClass="field" stylesheets="@css/style.css">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </TextField>
-            <Button alignment="TOP_RIGHT" layoutX="709.0" layoutY="22.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="116.0" styleClass="btn-top" stylesheets="@css/button.css" text="ค้นหา" textFill="#081f37">
+            <Button alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="654.0" layoutY="42.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="107.0" styleClass="btn-top" stylesheets="@css/button.css" text="รับของ" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
@@ -133,24 +133,61 @@
                   <Insets />
                </opaqueInsets>
             </Button>
-            <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="721.0" layoutY="28.0">
-               <image>
-                  <Image url="@image/search-dollar-solid.png" />
-               </image>
-            </ImageView>
-            <Button alignment="CENTER" layoutX="840.0" layoutY="22.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="116.0" styleClass="btn-top" stylesheets="@css/button.css" text="กลับ" textFill="#081f37">
+            <TableView layoutY="330.0" prefHeight="444.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
+               <columns>
+                  <TableColumn prefWidth="104.0" text="ลำดับ" />
+                  <TableColumn prefWidth="245.0" text="สินค้า" />
+                  <TableColumn prefWidth="283.0" text="คุณสมบัติ" />
+                  <TableColumn prefWidth="127.0" text="จำนวนสั่งซื้อ" />
+                  <TableColumn prefWidth="131.0" text="จำนวนรับ" />
+                  <TableColumn prefWidth="79.0" text="เสีย" />
+               </columns>
+            </TableView>
+            <Pane layoutX="55.0" layoutY="142.0" prefHeight="45.0" prefWidth="297.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <Label alignment="CENTER" prefHeight="45.0" prefWidth="210.0" styleClass="show_label" stylesheets="@css/style.css" text="เลขที่ใบสั่งซื้อ : ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="55.0" layoutY="201.0" prefHeight="45.0" prefWidth="297.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <Label alignment="CENTER" prefHeight="45.0" prefWidth="210.0" styleClass="show_label" stylesheets="@css/style.css" text="วันกำหนดรับ : ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane layoutX="55.0" layoutY="261.0" prefHeight="45.0" prefWidth="297.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <Label alignment="CENTER" prefHeight="45.0" prefWidth="210.0" styleClass="show_label" stylesheets="@css/style.css" text="วันที่รับสินค้า : ">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button alignment="TOP_RIGHT" contentDisplay="RIGHT" layoutX="772.0" layoutY="42.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="107.0" styleClass="btn-top" text="ปิด" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <stylesheets>
+                  <URL value="@css/button.css" />
+                  <URL value="@css/style.css" />
+               </stylesheets>
             </Button>
-            <TableView layoutY="84.0" prefHeight="691.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
-              <columns>
-                <TableColumn prefWidth="182.0" text="เลขที่ใบรับของ" />
-                <TableColumn prefWidth="207.0" text="เลขที่ใบสั่งซื้อ" />
-                  <TableColumn prefWidth="200.0" text="วันที่รับของ" />
-                  <TableColumn prefWidth="380.0" text="ผู้รับของ" />
-              </columns>
-            </TableView>
-         </children></Pane>
+            <ImageView fitHeight="30.0" fitWidth="35.0" layoutX="794.0" layoutY="51.0">
+               <image>
+                  <Image url="@image/window-close-regular.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
