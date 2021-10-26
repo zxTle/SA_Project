@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="HomePage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sa_project.controller.HomeController">
+<AnchorPane fx:id="HomePage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sa_project.controller.HomeController">
    <children>
       <ImageView fitHeight="768.0" fitWidth="885.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -78,7 +78,7 @@
                   <Font size="20.0" />
                </font>
             </PasswordField>
-            <Button layoutX="291.0" layoutY="678.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="108.0" style="-fx-background-color: white; -fx-border-color: #61BDF6; -fx-border-radius: 50px; -fx-background-radius: 50px; -fx-border-width: 3px;" text="เข้าสู่ระบบ" textFill="#081f37">
+            <Button layoutX="292.0" layoutY="677.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="108.0" style="-fx-background-color: white; -fx-border-color: #61BDF6; -fx-border-radius: 50px; -fx-background-radius: 50px; -fx-border-width: 3px;" text="เข้าสูระบบ" textFill="#081f37">
                <font>
                   <Font size="20.0" />
                </font>
