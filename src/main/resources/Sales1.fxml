@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,7 +20,7 @@
                <children>
                   <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="38.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../src/main/resources/image/comment-dollar.png" />
+                        <Image url="@image/comment-dollar.png" />
                      </image>
                   </ImageView>
                   <Label alignment="CENTER" layoutX="109.0" layoutY="17.0" prefHeight="27.0" prefWidth="89.0" text="ฝ่ายขาย" textAlignment="CENTER" textFill="WHITE">
@@ -52,25 +53,34 @@
                   </Label>
                   <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="32.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../src/main/resources/image/user-tie-solid.png" />
+                        <Image url="@image/user-tie-solid.png" />
                      </image>
                   </ImageView>
                </children>
             </Pane>
-            <Button fx:id="listRQBtn" layoutX="-1.0" layoutY="363.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" style="-fx-background-color: #081F37; -fx-text-fill: #ffff;" text="รายการใบเบิก">
+            <Button fx:id="listRQBtn" layoutX="-1.0" layoutY="363.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รายการใบเบิก">
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow />
+               </effect>
             </Button>
-            <Button fx:id="createRQBtn" layoutX="-1.0" layoutY="426.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" style="-fx-background-color: #61BDF6;" text="สร้างใบเบิก">
+            <Button fx:id="createRQMenuBtn" layoutX="-1.0" layoutY="426.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="สร้างใบเบิก">
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow />
+               </effect>
             </Button>
-            <Button fx:id="logoutBtn" layoutX="-1.0" layoutY="707.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" style="-fx-background-color: #61BDF6;" text="ออกจากระบบ">
+            <Button fx:id="logoutBtn" layoutX="-1.0" layoutY="707.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="ออกจากระบบ">
                <font>
                   <Font size="20.0" />
                </font>
+               <effect>
+                  <DropShadow />
+               </effect>
             </Button>
          </children></Pane>
       <Pane layoutX="317.0" layoutY="-2.0" prefHeight="775.0" prefWidth="970.0" style="-fx-background-color: #081F37;">
@@ -80,20 +90,27 @@
                   <Font size="20.0" />
                </font>
             </TextField>
-            <Button fx:id="searchBtn" layoutX="842.0" layoutY="20.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="108.0" style="-fx-background-color: white; -fx-border-color: #61BDF6; -fx-border-radius: 50px; -fx-background-radius: 50px; -fx-border-width: 3px;" text="ค้นหา" textFill="#081f37">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-            <TableView fx:id="mainTable" layoutY="90.0" prefHeight="686.0" prefWidth="970.0" style="-fx-background-color: trasparent;">
+            <TableView fx:id="mainTable" layoutY="90.0" prefHeight="686.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
               <columns>
                 <TableColumn prefWidth="113.60000610351562" text="เลขที่ใบเบิก" />
                 <TableColumn prefWidth="173.60006713867188" text="วันที่ออกใบเบิก" />
                   <TableColumn prefWidth="238.4000244140625" text="ผู้ออกใบเบิก" />
                   <TableColumn prefWidth="213.5999755859375" text="วันที่กำหนดเบิกของ" />
-                  <TableColumn prefWidth="224.800048828125" text="สถานะ" />
+                  <TableColumn prefWidth="227.5999755859375" text="สถานะ" />
               </columns>
             </TableView>
+            <Button fx:id="searchBtn" layoutX="835.0" layoutY="21.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="113.0" styleClass="btn-top" stylesheets="@css/button.css" text="ค้นหา" textFill="#081f37">
+               <font>
+                  <Font size="1.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@image/search-dollar-solid.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children></Pane>
    </children>
 </AnchorPane>

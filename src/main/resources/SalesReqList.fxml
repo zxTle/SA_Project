@@ -11,21 +11,20 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sa_project.controller.SalesController">
    <children>
-      <Pane fx:id="menuSideBar" prefHeight="768.0" prefWidth="317.0" style="-fx-background-color: #61BDF6;">
+      <Pane prefHeight="770.0" prefWidth="317.0" style="-fx-background-color: #61BDF6;">
          <children>
             <Pane layoutX="25.0" layoutY="19.0" prefHeight="70.0" prefWidth="267.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
                <children>
                   <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="38.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@image/archive-solid.png" />
+                        <Image url="@image/comment-dollar.png" />
                      </image>
                   </ImageView>
-                  <Label contentDisplay="CENTER" layoutX="109.0" layoutY="17.0" prefHeight="36.0" prefWidth="114.0" styleClass="role-name" stylesheets="@css/style.css" text="ฝ่ายคลัง" textFill="WHITE">
+                  <Label alignment="CENTER" layoutX="109.0" layoutY="17.0" prefHeight="27.0" prefWidth="89.0" text="ฝ่ายขาย" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -60,72 +59,23 @@
                   </ImageView>
                </children>
             </Pane>
-            <Button fx:id="listRQBtn" layoutX="-1.0" layoutY="363.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รายการสินค้าในคลัง" textFill="#61bdf6">
+            <Button fx:id="listRQBtn" layoutX="-1.0" layoutY="363.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รายการใบเบิก">
                <font>
                   <Font size="20.0" />
                </font>
                <effect>
-                  <DropShadow blurType="TWO_PASS_BOX">
-                     <color>
-                        <Color opacity="0.699999988079071" />
-                     </color>
-                  </DropShadow>
+                  <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="createRQBtn" layoutX="-1.0" layoutY="426.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" style="-fx-background-color: #61BDF6;" text="สร้างใบเบิก">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-            <Button fx:id="createRQBtn1" layoutX="-3.0" layoutY="426.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รายการใบเบิก">
+            <Button fx:id="createRQMenuBtn" layoutX="-1.0" layoutY="426.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="สร้างใบเบิก">
                <font>
                   <Font size="20.0" />
                </font>
                <effect>
-                  <DropShadow blurType="TWO_PASS_BOX">
-                     <color>
-                        <Color opacity="0.699999988079071" />
-                     </color>
-                  </DropShadow>
+                  <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="createRQBtn11" layoutX="-1.0" layoutY="489.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="สั่งซื้อสินค้าเข้าคลัง">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <effect>
-                  <DropShadow blurType="TWO_PASS_BOX">
-                     <color>
-                        <Color opacity="0.699999988079071" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Button>
-            <Button fx:id="createRQBtn111" layoutX="-1.0" layoutY="552.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รับสินค้าเข้าคลัง">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <effect>
-                  <DropShadow blurType="TWO_PASS_BOX">
-                     <color>
-                        <Color opacity="0.699999988079071" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Button>
-            <Button fx:id="createRQBtn1111" layoutX="-3.0" layoutY="615.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="รายการใบเคลม">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <effect>
-                  <DropShadow blurType="TWO_PASS_BOX">
-                     <color>
-                        <Color opacity="0.699999988079071" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Button>
-            <Button fx:id="logoutBtn" layoutX="-3.0" layoutY="707.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" style="-fx-background-color: #61BDF6;" styleClass="menu" stylesheets="@css/button.css" text="ออกจากระบบ">
+            <Button fx:id="logoutBtn" layoutX="-1.0" layoutY="707.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="320.0" styleClass="menu" stylesheets="@css/button.css" text="ออกจากระบบ">
                <font>
                   <Font size="20.0" />
                </font>
@@ -134,48 +84,14 @@
                </effect>
             </Button>
          </children></Pane>
-      <Pane fx:id="reqList" layoutX="317.0" layoutY="-2.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
+      <Pane layoutX="317.0" layoutY="-2.0" prefHeight="775.0" prefWidth="970.0" style="-fx-background-color: #081F37;">
          <children>
-            <TextField fx:id="inputSearch" layoutX="571.0" layoutY="20.0" prefHeight="24.0" prefWidth="248.0" promptText="ค้นหาใบเบิก..." style="-fx-border-color: #61BDF6; -fx-border-width: 3px; -fx-border-radius: 50px; -fx-background-radius: 50px;">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </TextField>
-            <Button alignment="TOP_RIGHT" layoutX="831.0" layoutY="21.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="114.0" styleClass="btn-top" stylesheets="@css/button.css" text="ค้นหา" textFill="#081f37">
-               <font>
-                  <Font size="1.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <graphic>
-                  <ImageView>
-                     <image>
-                        <Image url="@image/search.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <TableView fx:id="mainTable" layoutY="90.0" prefHeight="681.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
+            <TableView fx:id="saleTable" layoutY="379.0" prefHeight="397.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
               <columns>
-                <TableColumn prefWidth="113.60000610351562" text="เลขที่ใบเบิก" />
-                <TableColumn prefWidth="173.60006713867188" text="วันที่ออกใบเบิก" />
-                  <TableColumn prefWidth="238.4000244140625" text="ผู้ออกใบเบิก" />
-                  <TableColumn prefWidth="213.5999755859375" text="วันกำหนดส่ง" />
-                  <TableColumn prefWidth="228.0" text="สถานะ" />
-              </columns>
-            </TableView>
-         </children></Pane>
-      <Pane fx:id="reqDetail" layoutX="317.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
-         <children>
-            <TableView layoutY="342.0" prefHeight="426.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
-              <columns>
-                <TableColumn prefWidth="68.0" text="ลำดับ" />
-                <TableColumn prefWidth="277.0" text="สินค้า" />
-                  <TableColumn minWidth="0.0" prefWidth="276.0" text="รายละเอียด" />
-                  <TableColumn prefWidth="114.0" text="จำนวน&#10;ขอเบิก" />
-                  <TableColumn prefWidth="114.0" text="คงคลัง" />
-                  <TableColumn prefWidth="114.0" text="คงเหลือ" />
+                <TableColumn prefWidth="113.60000610351562" text="ลำดับ" />
+                <TableColumn prefWidth="173.60006713867188" text="สินค้า" />
+                  <TableColumn prefWidth="516.800048828125" text="คุณสมบัติ" />
+                  <TableColumn prefWidth="164.0" text="จำนวนขอเบิก" />
               </columns>
             </TableView>
             <Pane layoutX="52.0" layoutY="34.0" prefHeight="70.0" prefWidth="614.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
@@ -244,7 +160,7 @@
                   <TextField layoutX="177.0" layoutY="1.0" prefHeight="44.0" prefWidth="189.0" style="-fx-background-radius: 50;" styleClass="field" stylesheets="@css/Eng.css" />
                </children>
             </Pane>
-            <Button alignment="CENTER" layoutX="488.0" layoutY="263.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="146.0" styleClass="btn-top" stylesheets="@css/button.css" text="ตรวจสอบ" textFill="#081f37">
+            <Button fx:id="CancleReqBtn" alignment="CENTER" layoutX="678.0" layoutY="44.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="158.0" styleClass="btn-top" stylesheets="@css/button.css" text="ยกเลิกใบเบิก" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
@@ -254,27 +170,19 @@
                <graphic>
                   <ImageView fitHeight="26.0" fitWidth="28.0" preserveRatio="true">
                      <image>
-                        <Image url="@image/check-circle-solid.png" />
+                        <Image url="@image/window-close-regular.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button alignment="CENTER" layoutX="642.0" layoutY="263.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="124.0" styleClass="btn-top" stylesheets="@css/button.css" text="ส่งของ" textFill="#081f37">
+            <Button fx:id="Backbtn" alignment="CENTER" layoutX="847.0" layoutY="44.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="89.0" styleClass="btn-top" stylesheets="@css/button.css" text="กลับ" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-               <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="28.0" preserveRatio="true">
-                     <image>
-                        <Image url="@image/truck-solid.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
             </Button>
-         </children>
-      </Pane>
+         </children></Pane>
    </children>
 </AnchorPane>
