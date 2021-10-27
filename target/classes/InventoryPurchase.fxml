@@ -19,16 +19,16 @@
          <children>
             <Pane layoutX="25.0" layoutY="30.0" prefHeight="70.0" prefWidth="267.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
                <children>
-                  <Label alignment="CENTER" layoutX="109.0" layoutY="17.0" prefHeight="27.0" prefWidth="89.0" text="ฝ่ายคลัง" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
                   <ImageView fitHeight="38.0" fitWidth="49.0" layoutX="48.0" layoutY="16.0">
                      <image>
                         <Image url="@image/archive-solid.png" />
                      </image>
                   </ImageView>
+                  <Label alignment="CENTER" layoutX="115.0" layoutY="13.0" prefHeight="45.0" prefWidth="108.0" styleClass="position" stylesheets="@css/style.css" text="ฝ่ายคลัง" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
             <Label alignment="CENTER" layoutX="48.0" layoutY="136.0" prefHeight="30.0" prefWidth="222.0" text="Date">
@@ -148,7 +148,7 @@
                   <TableColumn prefWidth="182.0" text="เลขที่ใบสั่งซื้อ" />
                   <TableColumn prefWidth="207.0" text="วันที่ออกใบสั่งซื้อ" />
                   <TableColumn prefWidth="200.0" text="ผู้ออกใบสั่งซื้อ" />
-                  <TableColumn prefWidth="151.0" text="ผู้รับของ" />
+                  <TableColumn prefWidth="151.0" text="วันกำหนดรับ" />
                   <TableColumn prefWidth="123.0" text="สถานะ" />
                   <TableColumn prefWidth="107.0" />
                </columns>

@@ -45,7 +45,7 @@
     -fx-text-fill : #081F37;
 }
 
-.menu:hover{
+.menu:hover, .menu-selected{
     -fx-font-family: 'Kanit';
     -fx-font-size: 20px;
     -fx-background-color: #081F37;

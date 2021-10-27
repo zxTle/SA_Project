@@ -16,7 +16,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sa_project.controller.SalesController">
    <children>
-      <Pane fx:id="menuSideBar" prefHeight="768.0" prefWidth="317.0" style="-fx-background-color: #61BDF6;">
+      <Pane prefHeight="768.0" prefWidth="317.0" style="-fx-background-color: #61BDF6;">
          <children>
             <Pane layoutX="25.0" layoutY="19.0" prefHeight="70.0" prefWidth="267.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
                <children>
@@ -131,7 +131,7 @@
                </font>
             </Button>
          </children></Pane>
-      <Pane fx:id="reqList" layoutX="317.0" layoutY="-2.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
+      <Pane layoutX="317.0" layoutY="-2.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
          <children>
             <TextField fx:id="inputSearch" layoutX="571.0" layoutY="20.0" prefHeight="24.0" prefWidth="248.0" promptText="ค้นหาใบเบิก..." style="-fx-border-color: #61BDF6; -fx-border-width: 3px; -fx-border-radius: 50px; -fx-background-radius: 50px;">
                <font>
@@ -163,7 +163,7 @@
               </columns>
             </TableView>
          </children></Pane>
-      <Pane fx:id="reqDetail" layoutX="317.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
+      <Pane layoutX="317.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
          <children>
             <TableView layoutY="342.0" prefHeight="426.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
               <columns>

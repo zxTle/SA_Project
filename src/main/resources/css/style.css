@@ -65,3 +65,21 @@
     -fx-background-radius: 50px;
 }
 
+/*เมนูฝั่งซ้าย ฝ่ายขาย ฝ่ายคลัง*/
+.role-name{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 25px;
+}
+
+/*หัวข้อเลขที่เอกสาร*/
+.doc-id-label{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 28px;
+}
+
+/*หัวข้อเลขที่เอกสาร*/
+.doc-field-label{
+    -fx-font-family: 'Kanit';
+    -fx-font-size: 22px;
+}
+
