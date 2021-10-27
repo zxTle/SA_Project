@@ -34,30 +34,6 @@
     -fx-text-fill: #081F37;
     -fx-opacity: 1.0;
 }
-.text-area {
-    -fx-background-color:#61BDF6;
-    -fx-background-radius: 50px;
-    -fx-font-size: 20px;
-    -fx-font-family: 'Kanit';
-    -fx-border-radius: 50px;
-    -fx-border-width: 3px;
-    -fx-border-color: white;
-    -fx-opacity: 1.0;
-}
-.text-area .scroll-pane {
-    -fx-background-color: transparent;
-    -fx-opacity: 1.0;
-}
-.text-area .scroll-pane .viewport{
-    -fx-background-color: transparent;
-}
-.text-area .scroll-pane .content{
-    -fx-background-color: transparent;
-}
-.text-area .content{
-    -fx-padding: 20px;
-
-}
 
 
 .status-field{
@@ -65,21 +41,10 @@
     -fx-background-radius: 50px;
 }
 
-/*เมนูฝั่งซ้าย ฝ่ายขาย ฝ่ายคลัง*/
-.role-name{
-    -fx-font-family: 'Kanit';
-    -fx-font-size: 25px;
-}
-
-/*หัวข้อเลขที่เอกสาร*/
-.doc-id-label{
-    -fx-font-family: 'Kanit';
-    -fx-font-size: 28px;
-}
-
-/*หัวข้อเลขที่เอกสาร*/
-.doc-field-label{
-    -fx-font-family: 'Kanit';
-    -fx-font-size: 22px;
+.field_style{
+    -fx-border-color: #61BDF6;
+    -fx-border-width: 3px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
 }
 
