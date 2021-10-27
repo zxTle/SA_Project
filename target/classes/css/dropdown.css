@@ -41,3 +41,48 @@
     -fx-text-fill : #081F37;
     -fx-font-family: 'Kanit';
 }
+
+
+.select {
+    -fx-background-color : white;
+    -fx-mark-color : #081F37;
+    -fx-text-fill: #081F37;
+    -fx-border-radius: 50px;
+    -fx-border-width: 3px;
+    -fx-border-color: #61BDF6;
+    -fx-background-radius: 50px;
+}
+.select > .label{
+    -fx-text-fill : #081F37;
+    -fx-font-size: 20px;
+    -fx-font-family: 'Kanit';
+}
+.select .menu-item:focused{
+    -fx-background-color : #61BDF6;
+    -fx-background-radius : 50px;
+    -fx-font-family: 'Kanit';
+}
+
+.select .menu-item > .label{
+    -fx-background-radius : 50px;
+    -fx-background-width : 210;
+    -fx-font-size: 20px;
+    -fx-text-fill :  #081F37;
+    -fx-font-family: 'Kanit';
+}
+.select .context-menu{
+    -fx-background-radius : 20px;
+    -fx-pref-width : 210;
+    -fx-border-width : 3px;
+    -fx-border-radius :20px;
+    -fx-border-color : #61BDF6;
+    -fx-font-family: 'Kanit';
+}
+.select .menu-item:focused > .label{
+    -fx-text-fill : #081F37;
+    -fx-font-family: 'Kanit';
+}
+
+.item_text{
+    -fx-text-alignment: center;
+}
