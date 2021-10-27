@@ -138,14 +138,14 @@
                   <TableColumn prefWidth="104.0" text="ลำดับ" />
                   <TableColumn prefWidth="245.0" text="สินค้า" />
                   <TableColumn prefWidth="283.0" text="คุณสมบัติ" />
-                  <TableColumn prefWidth="127.0" text="จำนวนซื้อ" />
+                  <TableColumn prefWidth="127.0" text="จำนวนสั่งซื้อ" />
                   <TableColumn prefWidth="131.0" text="จำนวนรับ" />
                   <TableColumn prefWidth="79.0" text="เสีย" />
                </columns>
             </TableView>
             <Pane layoutX="55.0" layoutY="142.0" prefHeight="45.0" prefWidth="297.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
                <children>
-                  <Label alignment="CENTER" prefHeight="45.0" prefWidth="210.0" styleClass="show_label" stylesheets="@css/style.css" text="เลขที่ใบรับของ : ">
+                  <Label alignment="CENTER" prefHeight="45.0" prefWidth="210.0" styleClass="show_label" stylesheets="@css/style.css" text="เลขที่ใบสั่งซื้อ : ">
                      <font>
                         <Font size="20.0" />
                      </font>
