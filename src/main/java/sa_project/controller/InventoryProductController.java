@@ -1,15 +1,21 @@
 package sa_project.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import sa_project.model.Account;
 import sa_project.model.Products;
 
+import java.io.IOException;
 
 
 public class InventoryProductController {
@@ -25,9 +31,12 @@ public class InventoryProductController {
 //    private TableColumn<?, ?> productWantTb;
 //    private TableColumn<?, ?> productAvailTb;
     @FXML private ImageView icon;
+    public Account account;
 
 
-    public void initialize(){}
+    public void initialize(){
+        Platform.runLater(() -> usernameLabel.setText(account.getUsername()));
+    }
     @FXML
     private void handleEditPageClick(ActionEvent click){
         if(click.getSource() == EditBtn){
@@ -53,4 +62,18 @@ public class InventoryProductController {
 //
 //        productTable.setItems(list);
 //    }
+    @FXML public void handleLogOutBtn(ActionEvent event) throws IOException {
+        logoutBtn = (Button) event.getSource();
+        Stage stage = (Stage) logoutBtn.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home.fxml"));
+        stage.setScene(new Scene(loader.load(), 1280, 768));
+
+        HomeController c = new HomeController();
+
+        stage.show();
+    }
+
+    public void setAccount(Account account){
+        this.account = account;
+    }
 }

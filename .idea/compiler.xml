@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="cctv" target="1.5" />
+      <module name="cctv" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
