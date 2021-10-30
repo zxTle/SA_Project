@@ -4,20 +4,16 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.Account;
-import sa_project.model.Products;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -26,7 +22,11 @@ import java.util.Locale;
 
 
 public class InventoryProductController {
-    @FXML private Label dateLabel,usernameLabel,productCode,productType;
+    private String styleHover = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #081F37;\n" +
+            "-fx-background-radius : 0;\n" + "-fx-text-fill : #61BDF6;";
+    private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
+            "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
+    @FXML private Label dateLabel,usernameLabel,nameLabel,productCode,productType;
     @FXML private Button listRQBtn,createRQBtn,logoutBtn,createRQBtn1,EditBtn,BackBtn,searchBtn;
     @FXML private TextField inputSearch,productName;
     @FXML private TextArea productSpec;
@@ -42,7 +42,13 @@ public class InventoryProductController {
 
 
     public void initialize(){
-        Platform.runLater(() -> usernameLabel.setText(account.getUsername()));
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                usernameLabel.setText(account.getUsername());
+                nameLabel.setText(account.getName());
+            }
+        });
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy HH:mm", new Locale("en"));
             dateLabel.setText(LocalDateTime.now().format(formatter));
