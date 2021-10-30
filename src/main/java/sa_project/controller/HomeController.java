@@ -33,7 +33,7 @@ public class HomeController {
             DatabaseConnection login = new DatabaseConnection();
             Connection connectDB = login.getConnection();
 
-            String verifyLogin = "SELECT Position FROM employees WHERE Emp_name = '" + usernameField.getText() + "' AND Pass = '" + passwordField.getText() + "'";
+            String verifyLogin = "SELECT Position FROM employees WHERE Emp_id = '" + usernameField.getText() + "' AND Pass = '" + passwordField.getText() + "'";
             try {
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(verifyLogin);
@@ -41,7 +41,6 @@ public class HomeController {
                 while(queryResult.next()){
                     if(queryResult.getString(1).equals("Sale")){
                         account = new Account(usernameField.getText());
-//                        System.out.println(queryResult.getString(1));
                         System.out.println(account.toString());
                         loginBtn = (Button) event.getSource();
                         Stage stage = (Stage) loginBtn.getScene().getWindow();
@@ -54,7 +53,6 @@ public class HomeController {
                     }
                     if(queryResult.getString(1).equals("Inventory")){
                         account = new Account(usernameField.getText());
-//                        System.out.println(queryResult.getString(1));
                         System.out.println(account.toString());
                         loginBtn = (Button) event.getSource();
                         Stage stage = (Stage) loginBtn.getScene().getWindow();
