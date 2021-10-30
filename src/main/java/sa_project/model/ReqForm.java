@@ -31,6 +31,34 @@ public class ReqForm {
         this.empName = empName;
     }
 
+    public void setRqNumber(String rqNumber) {
+        this.rqNumber = rqNumber;
+    }
+
+    public void setRqDate(String rqDate) {
+        this.rqDate = rqDate;
+    }
+
+    public void setRqDueDate(String rqDueDate) {
+        this.rqDueDate = rqDueDate;
+    }
+
+    public void setDeliveriedDate(String deliveriedDate) {
+        this.deliveriedDate = deliveriedDate;
+    }
+
+    public void setRqStatus(String rqStatus) {
+        this.rqStatus = rqStatus;
+    }
+
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
+
     public String getRqNumber() {
         return rqNumber;
     }

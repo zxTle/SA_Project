@@ -21,6 +21,7 @@ import sa_project.model.*;
 import sa_project.service.reqService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -37,8 +38,10 @@ public class SalesController {
     private ProductsDocList prList;
     private reqService service;
     private NumberFormat rqNumFormat = new DecimalFormat("0000");
+    private ReqForm rqselect;
     @FXML Label usernameLabel, dateLabel,nameLabel,rqNumFm,rqEmpFm,rqDateFm;
     @FXML Button logoutBtn,listRQBtn,createRQMenuBtn,searchBtn;
+    @FXML Button CancelReqBtn,Backbtn;
     @FXML Pane reqDetails,reqForm,ReqList;
     @FXML TextField inputSearch;
     @FXML private TableView<ReqForm> reqTable;
@@ -77,6 +80,10 @@ public class SalesController {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
+    private void resetData(){
+        rqList = service.getRqList("SELECT RQ_no,RQ_date,RQ_due_date,Deliveried_date,RQ_status,OR_no,Emp_id,Emp_name FROM req_forms NATURAL JOIN employees");
+        showData();
+    }
     private void showData() {
         ObservableList<ReqForm> reqList = FXCollections.observableArrayList(rqList.toList());
         reqNo.setCellValueFactory(new PropertyValueFactory<>("rqNumber"));
@@ -114,6 +121,7 @@ public class SalesController {
             listRQBtn.setStyle(styleHover);
             listRQBtn.setOnMouseExited(event -> listRQBtn.setStyle(styleHover));
             ReqList.toFront();
+            showData();
             createRQMenuBtn.setStyle(styleNormal);
             createRQMenuBtn.setOnMouseEntered(event -> createRQMenuBtn.setStyle(styleHover));
             createRQMenuBtn.setOnMouseExited(event -> createRQMenuBtn.setStyle(styleNormal));
@@ -123,8 +131,11 @@ public class SalesController {
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
             if(mouseEvent.getClickCount() == 2 && !reqTable.getSelectionModel().getSelectedCells().isEmpty()) {
                 ReqForm clickedReq = reqTable.getSelectionModel().getSelectedItem();
+                rqselect = clickedReq;
                 prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+clickedReq.getRqNumber() + "'");
                 reqDetails.toFront();
+                if(rqselect.getRqStatus().equals("Cancelled")) {CancelReqBtn.setDisable(true);}
+                else {CancelReqBtn.setDisable(false);}
                 rqNum.setText("เลขที่ใบเบิก : "+clickedReq.getRqNumber());
                 orNum.setText("เลขออเดอร์  : "+clickedReq.getOrderNum());
                 empName.setText("ผู้ออกใบเบิก : "+clickedReq.getEmpName());
@@ -140,7 +151,18 @@ public class SalesController {
             }
         }
     }
-    @FXML private  void handleSearch(ActionEvent search){
+    @FXML private  void handletopBtn(ActionEvent btn) throws SQLException {
+        if(btn.getSource() == Backbtn){
+            ReqList.toFront();
+        }
+        else if(btn.getSource() == CancelReqBtn){
+            rqList.setStatus(rqselect,"Cancelled");
+            service.updateRqForm("UPDATE req_forms SET RQ_Status =" + "'"+rqselect.getRqStatus()+ "'"+
+                    " WHERE RQ_no = ",rqselect);
+            ReqList.toFront();
+            resetData();
+        }
+
 
     }
     public void setAccount(Account account){

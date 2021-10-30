@@ -6,10 +6,7 @@ import sa_project.model.ProductsDocList;
 import sa_project.model.ReqForm;
 import sa_project.model.ReqList;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 
 public class reqService {
@@ -71,5 +68,13 @@ public class reqService {
             throwables.printStackTrace();
         }
         return products;
+    }
+
+    public void updateRqForm(String query,ReqForm rqUpdate) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        String num = "'"+rqUpdate.getRqNumber()+"'";
+        Statement statement = connectDBSales.createStatement();
+        statement.executeUpdate(query+num+";");
     }
 }
