@@ -90,7 +90,7 @@
                   <Font size="1.0" />
                </font>
             </Button>
-            <Label fx:id="status" layoutX="170.0" layoutY="469.0" prefHeight="26.0" prefWidth="210.0" textFill="WHITE" />
+            <Label fx:id="status" layoutX="103.0" layoutY="473.0" prefHeight="26.0" prefWidth="273.0" styleClass="text" stylesheets="@css/style.css" textFill="#ff4f4f" />
          </children>
       </Pane>
    </children>
