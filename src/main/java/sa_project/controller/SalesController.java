@@ -101,7 +101,7 @@ public class SalesController {
     private void showData() {
         ObservableList<ReqForm> reqList = FXCollections.observableArrayList(rqList.toList());
         reqNo.setCellValueFactory(new PropertyValueFactory<>("rqNumber"));
-        reqEmp.setCellValueFactory(new PropertyValueFactory<>("empName"));
+        reqEmp.setCellValueFactory(new PropertyValueFactory<>("empId"));
         reqDate.setCellValueFactory(new PropertyValueFactory<>("rqDate"));
         reqDueDate.setCellValueFactory(new PropertyValueFactory<>("rqDueDate"));
         status.setCellValueFactory(new PropertyValueFactory<>("rqStatus"));
@@ -111,7 +111,7 @@ public class SalesController {
             searchFilter.setPredicate(req -> {
                 if(newValue == null || newValue.isEmpty()) return true;
                 if(req.getRqNumber().indexOf(newValue) != -1 || req.getRqStatus().indexOf(newValue) != -1
-                || req.getEmpName().indexOf(newValue) != -1) return true;
+                || req.getEmpName().indexOf(newValue) != -1 || req.getEmpId().indexOf(newValue) != -1) return true;
                 else return false;
             });
         });
@@ -177,7 +177,7 @@ public class SalesController {
                 else {CancelReqBtn.setDisable(false);}
                 rqNum.setText("เลขที่ใบเบิก : "+clickedReq.getRqNumber());
                 orNum.setText("เลขออเดอร์  : "+clickedReq.getOrderNum());
-                empName.setText("ผู้ออกใบเบิก : "+clickedReq.getEmpName());
+                empName.setText("ผู้ออกใบเบิก : Id "+clickedReq.getEmpId()+" , "+clickedReq.getEmpName());
                 rqDate.setText("วันที่ออกใบเบิก : "+clickedReq.getRqDate());
                 rqDue.setText("วันกำหนดส่ง : "+clickedReq.getRqDueDate());
                 rqShipDate.setText("วันนำส่งสินค้า : "+clickedReq.getDeliveriedDate());
@@ -213,15 +213,50 @@ public class SalesController {
             descrip.setCellValueFactory(new PropertyValueFactory<>("description"));
             qtyRq.setCellValueFactory(new PropertyValueFactory<>("quantity"));
             saleTable.setItems(createListDoc);
-            String id = productSelect.getText().split(":")[0];
-            String name = productSelect.getText().split(":")[1];
-            Integer qty = Integer.valueOf(rqQtyF.getText());
-            String des = productsList.getDescription(id);
-            ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty);
-            createList.addProduct(product);
-            saleTable.getItems().add(product);
+            if(productSelect.getText().equals("สินค้า") && rqQtyF.getText().equals("")){
+                alert2("");
+            }
+            else if (productSelect.getText().equals("สินค้า") && !(rqQtyF.getText().equals(""))){
+                alert2("สินค้า");
+            }
+            else if(!(productSelect.getText().equals("สินค้า")) && rqQtyF.getText().equals("")){
+                alert2("จำนวน");
+            }
+            else{
+                String id = productSelect.getText().split(":")[0];
+                String name = productSelect.getText().split(":")[1];
+                Integer qty = Integer.valueOf(rqQtyF.getText());
+                String des = productsList.getDescription(id);
+                ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty);
+                createList.addProduct(product);
+                saleTable.getItems().add(product);
+                rqQtyF.clear();
+                productSelect.setText("สินค้า");
+            }
         }
         if(e.getSource() == CreateReq){
+            if(OrderNumInput.getText().equals("") && datePick.getEditor().getText().equals("") && createList.toList().size()==0){
+                alert1("");
+            }
+            else if(OrderNumInput.getText().equals("") && !(datePick.getEditor().getText().equals("")) && createList.toList().size()!=0){
+                alert1("ออเดอร์");
+            }
+            else if(!(OrderNumInput.getText().equals("")) && datePick.getEditor().getText().equals("") && createList.toList().size()!=0){
+                alert1("วันที่");
+            }
+            else if(!(OrderNumInput.getText().equals("")) && !(datePick.getEditor().getText().equals("")) && createList.toList().size()==0){
+                alert1("สินค้า");
+            }
+            else if(OrderNumInput.getText().equals("") && datePick.getEditor().getText().equals("") && createList.toList().size()!=0){
+                alert1("ออเดอร์-วันที่");
+            }
+            else if(!(OrderNumInput.getText().equals("")) && datePick.getEditor().getText().equals("") && createList.toList().size()==0){
+                alert1("สินค้า-วันที่");
+            }
+            else if(OrderNumInput.getText().equals("") && !(datePick.getEditor().getText().equals("")) && createList.toList().size()==0){
+                alert1("สินค้า-ออเดอร์");
+            }
+            else {
             String rqNo = "RQ"+rqNumFormat.format(rqList.toList().size()+1);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
             String rqDate = LocalDateTime.now().format(formatter);
@@ -231,7 +266,9 @@ public class SalesController {
             service.addRqList(rqNo,createList);
             clearForm();
             ReqList.toFront();
+            showSuccess(rqNo);
             initialize();
+            }
         }
     }
 
@@ -243,9 +280,57 @@ public class SalesController {
         rqQtyF.clear();
         productSelect.setText("สินค้า");
     }
+    private void showSuccess(String rqNum){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("สร้างใบเบิกเรียบร้อย!");
+        alert.setHeaderText("สร้างใบเบิกเลขที่ "+rqNum+ " สำเร็จ");
+        alert.showAndWait();
+    }
+    private void alert1(String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ไม่สามารถสร้างใบเบิกได้!");
+        alert.setHeaderText("กรุณาตรวจกรอกข้อมูลให้ครบถ้วน");
+        if (message == "สินค้า"){
+            alert.setContentText("กรุณาเลือกสินค้าที่ต้องการเบิก");
+        }
+        else if(message == "ออเดอร์"){
+            alert.setContentText("กรุณากรอกเลขออเดอร์");
+        }
+        else if(message == "วันที่"){
+            alert.setContentText("กรุณาเลือกวันนำส่ง");
+        }
+        else if(message == "ออเดอร์-วันที่"){
+            alert.setContentText("กรุณากรอกเลขออเดอร์\n กรุณาเลือกวันนำส่ง");
+        }
+        else if(message == "สินค้า-วันที่"){
+            alert.setContentText("กรุณาเลือกวันนำส่ง \n กรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
+        }
+        else if(message == "สินค้า-ออเดอร์"){
+            alert.setContentText("กรุณากรอกเลขออเดอร์\n กรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
+        }
+        else {
+            alert.setContentText("กรุณากรอกเลขออเดอร์\n กรุณาเลือกวันนำส่ง \n กรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
+        }
+        alert.showAndWait();
+    }
+
+    private void alert2(String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ไม่สามารถเพิ่มสินค้าได้!");
+        alert.setHeaderText("กรุณาตรวจกรอกข้อมูลให้ครบถ้วน");
+        if (message == "สินค้า"){
+            alert.setContentText("กรุณาเลือกสินค้าที่จะขอเบิก");
+        }
+        else if(message == "จำนวน"){
+            alert.setContentText("กรุณากรอกจำนวนที่จะขอเบิก");
+        }
+        else {
+            alert.setContentText("กรุณาเลือกสินค้าที่จะขอเบิก\n"+"กรุณากรอกจำนวนที่จะขอเบิก");
+        }
+        alert.showAndWait();
+    }
     public void setAccount(Account account){
         this.account = account;
     }
-
 
 }
