@@ -111,7 +111,9 @@ public class SalesController {
             searchFilter.setPredicate(req -> {
                 if(newValue == null || newValue.isEmpty()) return true;
                 if(req.getRqNumber().indexOf(newValue) != -1 || req.getRqStatus().indexOf(newValue) != -1
-                || req.getEmpName().indexOf(newValue) != -1 || req.getEmpId().indexOf(newValue) != -1) return true;
+                || req.getEmpName().indexOf(newValue) != -1 || req.getEmpId().indexOf(newValue) != -1
+                || req.getRqNumber().toLowerCase().indexOf(newValue) != -1 || req.getRqStatus().toLowerCase().indexOf(newValue) != -1
+                        || req.getEmpName().toLowerCase().indexOf(newValue) != -1 || req.getEmpId().toLowerCase().indexOf(newValue) != -1) return true;
                 else return false;
             });
         });
