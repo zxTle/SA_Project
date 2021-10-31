@@ -51,7 +51,7 @@ public class HomeController {
 
                         stage.show();
                     }
-                    if(queryResult.getString(1).equals("Inventory")){
+                    if(queryResult.getString(2).equals("Inventory")){
                         account = new Account(usernameField.getText(),queryResult.getString(1));
                         System.out.println(account.toString());
                         loginBtn = (Button) event.getSource();

@@ -6,14 +6,15 @@ public class ProductDoc {
     private String productName;
     private String description;
     private int quantity;
+    private String productType;
 
-
-    public ProductDoc(int itemNum, String productId, String productName, String description, int quantity) {
+    public ProductDoc(int itemNum, String productId, String productName, String description, int quantity, String productType) {
         this.itemNum = itemNum;
         this.productId = productId;
         this.productName = productName;
         this.description = description;
         this.quantity = quantity;
+        this.productType = productType;
 
     }
 
@@ -55,5 +56,13 @@ public class ProductDoc {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 }

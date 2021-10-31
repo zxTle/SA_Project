@@ -57,7 +57,7 @@ public class reqService {
             String prName = queryResult.getString("Product_name");
             String des = queryResult.getString("Description");
             int qty = queryResult.getInt("RQ_qty");
-            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty);
+            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "");
             products.addProduct(product);
         }
     }
@@ -65,6 +65,32 @@ public class reqService {
         try {
             products = new ProductsDocList();
             readProductList(query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return products;
+    }
+
+    private void readSpecificProductList(String query) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        ResultSet queryResult = statement.executeQuery(query);
+        while (queryResult.next()){
+            int itemNo = queryResult.getInt("Qty_onhand");
+            String prId = queryResult.getString("Product_id");
+            String prName = queryResult.getString("Product_name");
+            String des = queryResult.getString("Description");
+            int qty = queryResult.getInt("Total_qty_req");
+            String prType = queryResult.getString("Product_type");
+            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty,prType);
+            products.addProduct(product);
+        }
+    }
+    public ProductsDocList getSpecificProductList(String query){
+        try {
+            products = new ProductsDocList();
+            readSpecificProductList(query);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
