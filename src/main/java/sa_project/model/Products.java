@@ -1,29 +1,18 @@
 package sa_project.model;
 
-public class ProductDoc {
-    private int itemNum;
+public class Products {
     private String productId;
+    private String productType;
     private String productName;
     private String description;
-    private int quantity;
 
-
-    public ProductDoc(int itemNum, String productId, String productName, String description, int quantity) {
-        this.itemNum = itemNum;
+    public Products(String productId, String productType, String productName, String description) {
         this.productId = productId;
+        this.productType = productType;
         this.productName = productName;
         this.description = description;
-        this.quantity = quantity;
-
     }
 
-    public int getItemNum() {
-        return itemNum;
-    }
-
-    public void setItemNum(int itemNum) {
-        this.itemNum = itemNum;
-    }
 
     public String getProductId() {
         return productId;
@@ -31,6 +20,14 @@ public class ProductDoc {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 
     public String getProductName() {
@@ -47,13 +44,5 @@ public class ProductDoc {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 }

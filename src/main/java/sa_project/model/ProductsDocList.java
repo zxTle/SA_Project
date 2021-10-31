@@ -13,4 +13,17 @@ public class ProductsDocList {
         productList.add(product);
     }
     public ArrayList<ProductDoc> toList(){return productList;}
+
+    public String toInsert (String rqNo){
+        String text="";
+        for(ProductDoc prDoc : productList){
+            if(prDoc.getItemNum() == productList.size()){
+                text += "("+ prDoc.getItemNum()+","+"'"+rqNo+"'"+","+"'"+prDoc.getProductId()+"'"+","+prDoc.getQuantity()+")"+";";
+            }
+            else{
+                text += "("+ prDoc.getItemNum()+","+"'"+rqNo+"'"+","+"'"+prDoc.getProductId()+"'"+","+prDoc.getQuantity()+")"+",";
+            }
+        }
+        return text;
+    }
 }

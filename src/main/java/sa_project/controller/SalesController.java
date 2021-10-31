@@ -6,7 +6,10 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
+import sa_project.service.productService;
 import sa_project.service.reqService;
 
 import java.io.IOException;
@@ -26,6 +30,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,14 +41,17 @@ public class SalesController {
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
     private ReqList rqList;
     private ProductsDocList prList;
+    private ProductsDocList createList = new ProductsDocList();
     private reqService service;
     private NumberFormat rqNumFormat = new DecimalFormat("0000");
     private ReqForm rqselect;
     @FXML Label usernameLabel, dateLabel,nameLabel,rqNumFm,rqEmpFm,rqDateFm;
-    @FXML Button logoutBtn,listRQBtn,createRQMenuBtn,searchBtn;
+    @FXML Button logoutBtn,listRQBtn,createRQMenuBtn;
     @FXML Button CancelReqBtn,Backbtn;
+    @FXML Button DiscardReqBtn,CreateReq,AddBtn;
     @FXML Pane reqDetails,reqForm,ReqList;
-    @FXML TextField inputSearch;
+    @FXML TextField inputSearch,OrderNumInput;
+    @FXML DatePicker datePick;
     @FXML private TableView<ReqForm> reqTable;
     @FXML private TableColumn<ReqForm,String> reqNo;
     @FXML private TableColumn<ReqForm,String> reqEmp;
@@ -51,12 +59,18 @@ public class SalesController {
     @FXML private TableColumn<ReqForm,Date> reqDate;
     @FXML private TableColumn<ReqForm,Date> reqDueDate;
     @FXML Label rqNum,orNum,empName,rqDate,rqDue,rqShipDate;
-
+    //Details
     @FXML private TableView<ProductDoc> saleTable1;
     @FXML private TableColumn<ProductDoc,Integer> itemNum;
     @FXML private TableColumn<ProductDoc,String> product;
     @FXML private TableColumn<ProductDoc,String> description;
     @FXML private TableColumn<ProductDoc,Integer> qty;
+    //Create
+    @FXML private TableView<ProductDoc> saleTable;
+    @FXML private TableColumn<ProductDoc,Integer> number;
+    @FXML private TableColumn<ProductDoc,String> productN;
+    @FXML private TableColumn<ProductDoc,String> descrip;
+    @FXML private TableColumn<ProductDoc,Integer> qtyRq;
 
 
 
@@ -87,11 +101,23 @@ public class SalesController {
     private void showData() {
         ObservableList<ReqForm> reqList = FXCollections.observableArrayList(rqList.toList());
         reqNo.setCellValueFactory(new PropertyValueFactory<>("rqNumber"));
-        reqEmp.setCellValueFactory(new PropertyValueFactory<>("empId"));
+        reqEmp.setCellValueFactory(new PropertyValueFactory<>("empName"));
         reqDate.setCellValueFactory(new PropertyValueFactory<>("rqDate"));
         reqDueDate.setCellValueFactory(new PropertyValueFactory<>("rqDueDate"));
         status.setCellValueFactory(new PropertyValueFactory<>("rqStatus"));
         reqTable.setItems(reqList);
+        FilteredList<ReqForm> searchFilter = new FilteredList<>(reqList, b -> true);
+        inputSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchFilter.setPredicate(req -> {
+                if(newValue == null || newValue.isEmpty()) return true;
+                if(req.getRqNumber().indexOf(newValue) != -1 || req.getRqStatus().indexOf(newValue) != -1
+                || req.getEmpName().indexOf(newValue) != -1) return true;
+                else return false;
+            });
+        });
+        SortedList<ReqForm> sortedReq = new SortedList<>(searchFilter);
+        sortedReq.comparatorProperty().bind(reqTable.comparatorProperty());
+        reqTable.setItems(sortedReq);
     }
     @FXML private void handleLogOutBtn(ActionEvent event) throws IOException {
         logoutBtn = (Button) event.getSource();
@@ -104,8 +130,21 @@ public class SalesController {
         stage.show();
     }
 
-    @FXML private void handleSidemenu(ActionEvent menu){
+    @FXML MenuButton productSelect;
+    @FXML TextField rqQtyF;
+    private ProductsList productsList;
+    private productService productService;
+    private void setSelectLabel(ActionEvent event){
+        MenuItem source = (MenuItem) event.getSource();
+        productSelect.setText(source.getText());
+
+    }
+    @FXML private void handleSidemenu(ActionEvent menu) throws SQLException {
         if(menu.getSource() == createRQMenuBtn){
+            EventHandler<ActionEvent> handler = this::setSelectLabel;
+            productService =  new productService();
+            productsList = productService.getProductsList("SELECT * FROM product_stocks;");
+            productsList.setMenuItem(productSelect,handler);
             createRQMenuBtn.setStyle(styleHover);
             createRQMenuBtn.setOnMouseExited(event -> createRQMenuBtn.setStyle(styleHover));
             reqForm.toFront();
@@ -134,7 +173,7 @@ public class SalesController {
                 rqselect = clickedReq;
                 prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+clickedReq.getRqNumber() + "'");
                 reqDetails.toFront();
-                if(rqselect.getRqStatus().equals("Cancelled")) {CancelReqBtn.setDisable(true);}
+                if(rqselect.getRqStatus().equals("Cancelled")||rqselect.getRqStatus().equals("Deliveried")) {CancelReqBtn.setDisable(true);}
                 else {CancelReqBtn.setDisable(false);}
                 rqNum.setText("เลขที่ใบเบิก : "+clickedReq.getRqNumber());
                 orNum.setText("เลขออเดอร์  : "+clickedReq.getOrderNum());
@@ -162,10 +201,51 @@ public class SalesController {
             ReqList.toFront();
             resetData();
         }
+    }
+    @FXML private void handleCreateRqPage(ActionEvent e) throws SQLException {
+        if(e.getSource() == DiscardReqBtn){
+            clearForm();
+        }
+        if(e.getSource() == AddBtn){
+            ObservableList<ProductDoc> createListDoc = FXCollections.observableArrayList(createList.toList());
+            number.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+            productN.setCellValueFactory(new PropertyValueFactory<>("productName"));
+            descrip.setCellValueFactory(new PropertyValueFactory<>("description"));
+            qtyRq.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            saleTable.setItems(createListDoc);
+            String id = productSelect.getText().split(":")[0];
+            String name = productSelect.getText().split(":")[1];
+            Integer qty = Integer.valueOf(rqQtyF.getText());
+            String des = productsList.getDescription(id);
+            ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty);
+            createList.addProduct(product);
+            saleTable.getItems().add(product);
+        }
+        if(e.getSource() == CreateReq){
+            String rqNo = "RQ"+rqNumFormat.format(rqList.toList().size()+1);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
+            String rqDate = LocalDateTime.now().format(formatter);
+            String dueDate = datePick.getValue().toString();
+            ReqForm createReq = new ReqForm(rqNo,rqDate,dueDate,"","Waiting",OrderNumInput.getText(),account.getUsername(), account.getName());
+            service.addRqForm(createReq);
+            service.addRqList(rqNo,createList);
+            clearForm();
+            ReqList.toFront();
+            initialize();
+        }
+    }
 
-
+    private void clearForm(){
+        OrderNumInput.clear();
+        datePick.getEditor().setText("");
+        saleTable.getItems().clear();
+        createList.toList().clear();
+        rqQtyF.clear();
+        productSelect.setText("สินค้า");
     }
     public void setAccount(Account account){
         this.account = account;
     }
+
+
 }

@@ -12,9 +12,10 @@ import java.sql.*;
 public class reqService {
     private ReqList reqForms;
     private ProductsDocList products;
-    private String query;
+
     public reqService() {
-        this.query = "";
+        reqForms = new ReqList();
+        products = new ProductsDocList();
     }
 
     private void readReqFormData(String query) throws SQLException {
@@ -77,4 +78,28 @@ public class reqService {
         Statement statement = connectDBSales.createStatement();
         statement.executeUpdate(query+num+";");
     }
+
+    public void addRqForm(ReqForm rqform) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        String rqNo ="'" + rqform.getRqNumber()+"'" ;
+        String rqDate = "'" +rqform.getRqDate()+"'" ;
+        String rqDue = "'" +rqform.getRqDueDate()+"'" ;
+        String status = "'" +rqform.getRqStatus()+"'" ;
+        String order = "'" +rqform.getOrderNum()+"'" ;
+        String emp = "'" +rqform.getEmpId()+"'" ;
+        String toInsert ="("+rqNo+","+rqDate+","+rqDue+","+"NULL"+","+status+","+order+","+emp+")";
+        String query = "INSERT INTO req_forms (RQ_no, RQ_date, RQ_due_date, Deliveried_date, RQ_status, OR_no, Emp_id) VALUES " +toInsert;
+        statement.executeUpdate(query);
+    }
+
+    public void addRqList(String rqNo,ProductsDocList products) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        String query = "INSERT INTO req_product_list (RQ_item_num, RQ_no, Product_id, RQ_qty) VALUES "+ products.toInsert(rqNo);
+        statement.executeUpdate(query);
+    }
+
 }
