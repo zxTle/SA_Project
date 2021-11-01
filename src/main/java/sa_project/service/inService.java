@@ -11,6 +11,8 @@ import java.sql.Statement;
 public class inService {
     private InList inList;
     private ProductsDocList products;
+    private String prToIn;
+    private InForm inFormResult;
 
     public inService() {
         inList = new InList();
@@ -64,6 +66,24 @@ public class inService {
     public InList getAllInForm(String query) throws SQLException {
         readInForm(query);
         return inList;
+    }
+
+    public InForm getInNoFromPrNo(String inputPrNo) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBInvent = dbConnect.getConnection();
+        Statement statement = connectDBInvent.createStatement();
+        ResultSet queryResult = statement.executeQuery("SELECT IN_no FROM in_forms WHERE PR_no = " + inputPrNo + ";");
+        while (queryResult.next()){
+            String inNo = queryResult.getString("IN_no");
+            String inDate = queryResult.getString("IN_date");
+            String empId = queryResult.getString("Emp_id");
+            String prNo = queryResult.getString("PR_no");
+            String empName = queryResult.getString("Emp_name");
+            inFormResult = new InForm(inNo,prNo,inDate,empId,empName);
+//            inList.addInList(inForm);
+        }
+
+        return inFormResult;
     }
 
 //    public

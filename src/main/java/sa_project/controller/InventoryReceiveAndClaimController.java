@@ -38,7 +38,7 @@ public class InventoryReceiveAndClaimController {
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #61BDF6;";
     private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
-    @FXML private Pane purchaseList,claimList,receiveList;
+    @FXML private Pane purchaseList,claimList,receiveList, receivePage;
     @FXML private MenuButton receiveProductBtn;
     @FXML private MenuItem receiveMenuBtn,claimsMenuBtn;
     @FXML private Label usernameLabel,nameLabel,dateLabel;
@@ -77,9 +77,21 @@ public class InventoryReceiveAndClaimController {
     @FXML private TableColumn<InForm,String>prNumT;
     @FXML private TableColumn<InForm,String> inDateT;
     @FXML private TableColumn<InForm,String> empReceive;
+    @FXML private Label inNo, prNo, receiver, inDueDate, inDate;
+    @FXML private Button inClose, inConfirm;
+    @FXML private TableView<ProductDoc> inPdTb;
+    @FXML private TableColumn<ProductDoc,Integer> itemIn;
+    @FXML private TableColumn<ProductDoc,String> productIn;
+    @FXML private TableColumn<ProductDoc,String> desIn;
+    @FXML private TableColumn<ProductDoc,Integer> qtyPr;
+    @FXML private TableColumn<ProductDoc,Integer> receiveIn;
+    @FXML private TableColumn<ProductDoc,Integer> scrapC;
+
 
     private Account account;
     private RtForm rtSelect;
+    private InForm inSelect;
+    private PrForm prSelect;
     private ProductsDocList prList;
     private PrList prFormList;
     private InList inFormList;
@@ -117,7 +129,7 @@ public class InventoryReceiveAndClaimController {
                 receiveProductBtn.setStyle(styleHover);
                 showRetList();
                 showPrList();
-                //"IN"+inNumFormat.format(inFormList.toList().size()+1);
+
             }
         });
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
@@ -214,6 +226,47 @@ public class InventoryReceiveAndClaimController {
             }
         }
     }
+
+    @FXML public void tableRowOnMouseClickToReceive(MouseEvent mouseEvent) throws SQLException{
+        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            if(mouseEvent.getClickCount() == 2 && !prFormTable.getSelectionModel().getSelectedCells().isEmpty()) {
+                PrForm clickedIn = prFormTable.getSelectionModel().getSelectedItem();
+                prSelect = clickedIn;
+                prList = in_service.getProductList("SELECT PR_item_num,PR_no,Product_id,PR_qty,Product_name,Description FROM PR_product_list NATURAL JOIN product_stocks WHERE PR_no ="+ "'"+ clickedIn.getPrNumber()+"'");
+                receivePage.toFront();
+                if(prSelect.getPrStatus().equals("Received")) {
+                    inConfirm.setDisable(true);
+                    inNo.setText("เลขที่ใบสั่งซื้อ : " + prSelect.getPrNumber());
+//                    InList temp = in_service.getAllInForm("SELECT IN_no FROM in_forms WHERE PR_no = 'PR0003'");
+//                    System.out.println("innum = " + temp.toList().get(0).getInNum());
+//                    prNo.setText("เลขที่ใบรับของ : " + temp.toList().get(0).getInNum() );
+                    prNo.setText("เลขที่ใบรับของ : ไม่ได้สักทีไอสัส");
+//                    prNo.setText("เลขที่ใบรับของ : " + (in_service.getInNoFromPrNo(prSelect.getPrNumber())).getInNum() );
+
+                }
+                else {
+                    inConfirm.setDisable(false);
+                    inNo.setText("เลขที่ใบรับของ : IN"+inNumFormat.format(inFormList.toList().size()+1));
+                    prNo.setText("เลขที่ใบสั่งซื้อ : " + prSelect.getPrNumber());
+                    receiver.setText("ผู้รับของ : " + account.getName());
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy", new Locale("en"));
+                    inDate.setText("วันที่ออกใบเบิก : " + (LocalDateTime.now().format(formatter)));
+                }
+                //"IN"+inNumFormat.format(inFormList.toList().size()+1);
+//                prNo.setText("เลขที่ใบสั่งซื้อ : "+clickedIn.getPrNumber());
+
+                ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
+                itemIn.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+                productIn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+                desIn.setCellValueFactory(new PropertyValueFactory<>("description"));
+                qtyPr.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+                receiveIn.setCellValueFactory(new PropertyValueFactory<>("claimsReason"));
+                scrapC.setCellValueFactory(new PropertyValueFactory<>("claimsReason1"));
+                inPdTb.setItems(productList);
+            }
+        }
+    }
+
     @FXML private  void handleTop(ActionEvent topBtn) throws SQLException {
         if(topBtn.getSource() == claimBtn){
             rt_service.updateRetStatus(rtSelect);
@@ -228,6 +281,7 @@ public class InventoryReceiveAndClaimController {
         }
         if(topBtn.getSource() == backRBtn) purchaseList.toFront();
     }
+
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
         if(menu.getSource() == listRQBtn){
             listRQBtn = (Button) menu.getSource();
@@ -263,12 +317,14 @@ public class InventoryReceiveAndClaimController {
             receiveProductBtn.setText(receiveMenuBtn.getText());
             purchaseList.toFront();
 
+
         }
         else if(menu.getSource() == claimsMenuBtn){
             receiveProductBtn.setText(claimsMenuBtn.getText());
             claimList.toFront();
         }
     }
+
     @FXML public void handleLogOutBtn(ActionEvent event) throws IOException {
         logoutBtn = (Button) event.getSource();
         Stage stage = (Stage) logoutBtn.getScene().getWindow();
