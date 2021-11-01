@@ -7,15 +7,34 @@ public class ProductDoc {
     private String description;
     private int quantity;
     private String productType;
+    private int onHand;
+    private int itemNumForecast;
 
-    public ProductDoc(int itemNum, String productId, String productName, String description, int quantity, String productType) {
+    public ProductDoc(int itemNum, String productId, String productName, String description, int quantity, String productType, int onHand, int itemNumForecast) {
         this.itemNum = itemNum;
         this.productId = productId;
         this.productName = productName;
         this.description = description;
         this.quantity = quantity;
         this.productType = productType;
+        this.onHand = onHand;
+        this.itemNumForecast = itemNumForecast;
+    }
 
+    public void setOnHand(int onHand) {
+        this.onHand = onHand;
+    }
+
+    public void setItemNumForecast(int itemNumForecast) {
+        this.itemNumForecast = itemNumForecast;
+    }
+
+    public int getOnHand() {
+        return onHand;
+    }
+
+    public int getItemNumForecast() {
+        return itemNumForecast;
     }
 
     public int getItemNum() {
@@ -64,5 +83,9 @@ public class ProductDoc {
 
     public void setProductType(String productType) {
         this.productType = productType;
+    }
+
+    public int getAvailableProduct(){
+        return itemNum - quantity;
     }
 }

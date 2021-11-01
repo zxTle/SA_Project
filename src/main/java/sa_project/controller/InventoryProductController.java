@@ -6,7 +6,10 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,9 +23,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
+import sa_project.service.productService;
 import sa_project.service.reqService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -34,9 +39,9 @@ public class InventoryProductController {
     private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
     @FXML private Label dateLabel,usernameLabel,nameLabel,productCode,productType,productID;
-    @FXML private Button listRQBtn,createRQBtn,logoutBtn,createRQBtn1,EditBtn,BackBtn,searchBtn;
-    @FXML private TextField inputSearch,productName;
-    @FXML private TextArea productSpec;
+    @FXML private Button listRQBtn,createRQBtn,logoutBtn,purchaseProductBtn,EditBtn,BackBtn,searchBtn,addItemBtn;
+    @FXML private TextField inputSearch,productName,pNameField;
+    @FXML private TextArea productSpec,desField;
     @FXML private TableView<ProductDoc> productTable;
     @FXML private TableColumn<ProductDoc, String> productCodeTb;
     @FXML private TableColumn<ProductDoc, String> productNameTb;
@@ -44,25 +49,34 @@ public class InventoryProductController {
     @FXML private TableColumn<ProductDoc, Integer> productInTb;
     @FXML private TableColumn<ProductDoc, Integer> productWantTb;
     @FXML private TableColumn<ProductDoc, Integer> productAvailTb;
+    @FXML private MenuButton typeChoice;
     @FXML private ImageView icon;
     @FXML private Pane editProductPage, RqList, productList, createProductPage;
     public Account account;
-    private reqService service;
+    private reqService reqService;
+    private productService productService;
     private ProductsDocList prList;
-
+    private ProductDoc thisProduct;
+    private CategoryList caList;
+    private boolean checkClick=false;
 
 
     public void initialize(){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                service = new reqService();
+                reqService = new reqService();
+                productService = new productService();
                 usernameLabel.setText(account.getUsername());
                 nameLabel.setText(account.getName());
-                prList = service.getSpecificProductList("SELECT Product_id, Product_name, Product_type, Description, Qty_onhand, Total_qty_req FROM product_stocks");
+                prList = reqService.getSpecificProductList("SELECT Product_id, Product_name, Product_type, Description, Qty_onhand, Total_qty_req FROM product_stocks");
                 listRQBtn.setStyle(styleHover);
                 productName.setDisable(true);
                 productSpec.setDisable(true);
+                Image ic = new Image("image/pencil-alt-solid.png");
+                icon.setImage(ic);
+                EditBtn.setText("เเก้ไข");
+                checkClick = false;
                 showData();
             }
         });
@@ -74,14 +88,34 @@ public class InventoryProductController {
         clock.play();
     }
     @FXML
-    private void handleEditPageClick(ActionEvent click){
+    private void handleEditPageClick(ActionEvent click) throws SQLException {
+        if(click.getSource() == EditBtn && checkClick){
+            if(productName.getText().isEmpty() && !productSpec.getText().isEmpty()){
+                alert("ชื่อสินค้า");
+            }
+            if(productSpec.getText().isEmpty() && !productName.getText().isEmpty()){
+                alert("คุณสมบัติ");
+            }
+            if(productSpec.getText().isEmpty() && productName.getText().isEmpty()){
+                alert("คุณสมบัติ-ชื่อสินค้า");
+            }
+//            else{
+//                productService.updateProductForm("Update product_stocks SET Product_name =" + "'"+ productName.getText() +"'" +
+//                        "WHERE ProductID=");
+//            }
+        }
         if(click.getSource() == EditBtn){
             productName.setDisable(false);
             productSpec.setDisable(false);
             EditBtn.setText("บันทึก");
             Image ic = new Image("image/file-download-solid.png");
             icon.setImage(ic);
+            checkClick = true;
         }
+    }
+    private void setSelectLabel(ActionEvent event){
+        MenuItem source = (MenuItem) event.getSource();
+        typeChoice.setText(source.getText());
     }
 
     @FXML public void showData(){
@@ -91,14 +125,30 @@ public class InventoryProductController {
         productSpecTb.setCellValueFactory(new PropertyValueFactory<>("description"));
         productInTb.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
         productWantTb.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+//        productAvailTb.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         productTable.setItems(productObservableList);
+
+        FilteredList<ProductDoc> searchFilter = new FilteredList<>(productObservableList, b -> true);
+        inputSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchFilter.setPredicate(product -> {
+                if(newValue == null || newValue.isEmpty()) return true;
+                if(product.getProductName().toLowerCase().indexOf(newValue) != -1
+                        || product.getDescription().toLowerCase().indexOf(newValue) != -1
+                        || product.getProductId().toLowerCase().indexOf(newValue) != -1) return true;
+                else return false;
+            });
+        });
+        SortedList<ProductDoc> sortedReq = new SortedList<>(searchFilter);
+        sortedReq.comparatorProperty().bind(productTable.comparatorProperty());
+        productTable.setItems(sortedReq);
     }
     @FXML public void tableRowOnMouseClick(MouseEvent mouseEvent){
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 2 && !productTable.getSelectionModel().getSelectedCells().isEmpty()){
                 ProductDoc selectProduct = productTable.getSelectionModel().getSelectedItem();
-                prList = service.getSpecificProductList("SELECT Product_id, Product_type, Product_name, Description, Qty_onhand, Total_qty_req FROM product_stocks");
+                thisProduct = selectProduct;
+                prList = reqService.getSpecificProductList("SELECT Product_id, Product_type, Product_name, Description, Qty_onhand, Total_qty_req FROM product_stocks");
                 editProductPage.toFront();
                 productID.setText(selectProduct.getProductId());
                 productName.setText(selectProduct.getProductName());
@@ -109,12 +159,22 @@ public class InventoryProductController {
     }
     @FXML public void handleBackBtn(ActionEvent event){
         productList.toFront();
+        initialize();
+    }
+    @FXML public void handleAddProduct(ActionEvent event) throws SQLException {
+        createProductPage.toFront();
+        EventHandler<ActionEvent> handler = this::setSelectLabel;
+        caList = productService.getCategoryList("SELECT Ctg_name, Initials FROM category");
+        caList.setMenuItem(typeChoice,handler);
+    }
+    @FXML public void handleAddItemBtn(ActionEvent event){
     }
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
         if(menu.getSource() == listRQBtn){
             listRQBtn.setStyle(styleHover);
             listRQBtn.setOnMouseExited(event -> listRQBtn.setStyle(styleHover));
             productList.toFront();
+            initialize();
         }
         else if(menu.getSource() == createRQBtn){
             createRQBtn = (Button) menu.getSource();
@@ -122,6 +182,16 @@ public class InventoryProductController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/StockOut.fxml"));
             stage.setScene(new Scene(loader.load(),1280,768));
             InventoryStockOutController controller = loader.getController();
+            controller.setAccount(account);
+
+            stage.show();
+        }
+        else if(menu.getSource() == purchaseProductBtn){
+            purchaseProductBtn = (Button) menu.getSource();
+            Stage stage = (Stage) purchaseProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryPurchaseProduct.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryPurchaseProductController controller = loader.getController();
             controller.setAccount(account);
 
             stage.show();
@@ -136,6 +206,90 @@ public class InventoryProductController {
         HomeController c = new HomeController();
 
         stage.show();
+    }
+//    @FXML private void handleCreateRqPage(ActionEvent e) throws SQLException {
+//        if(e.getSource() == DiscardReqBtn){
+//            clearForm();
+//        }
+//        if(e.getSource() == AddBtn){
+//            ObservableList<ProductDoc> createListDoc = FXCollections.observableArrayList(createList.toList());
+//            number.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+//            productN.setCellValueFactory(new PropertyValueFactory<>("productName"));
+//            descrip.setCellValueFactory(new PropertyValueFactory<>("description"));
+//            qtyRq.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+//            saleTable.setItems(createListDoc);
+//            if(productSelect.getText().equals("สินค้า") && (rqQtyF.getText().equals("") || Integer.parseInt(rqQtyF.getText()) == 0)){
+//                alert2("");
+//            }
+//            else if (productSelect.getText().equals("สินค้า") && (!(rqQtyF.getText().equals(""))  || Integer.parseInt(rqQtyF.getText()) != 0)){
+//                alert2("สินค้า");
+//            }
+//            else if(!(productSelect.getText().equals("สินค้า")) && (rqQtyF.getText().equals("")  || Integer.parseInt(rqQtyF.getText()) == 0)){
+//                alert2("จำนวน");
+//            }
+//            else{
+//                String id = productSelect.getText().split(":")[0];
+//                String name = productSelect.getText().split(":")[1];
+//                Integer qty = Integer.valueOf(rqQtyF.getText());
+//                String des = productsList.getDescription(id);
+//                ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty,"");
+//                createList.addProduct(product);
+//                saleTable.getItems().add(product);
+//                rqQtyF.clear();
+//                productSelect.setText("สินค้า");
+//            }
+//        }
+//        if(e.getSource() == CreateReq){
+//            if(OrderNumInput.getText().equals("") && datePick.getEditor().getText().equals("") && createList.toList().size()==0){
+//                alert1("");
+//            }
+//            else if(OrderNumInput.getText().equals("") && !(datePick.getEditor().getText().equals("")) && createList.toList().size()!=0){
+//                alert1("ออเดอร์");
+//            }
+//            else if(!(OrderNumInput.getText().equals("")) && datePick.getEditor().getText().equals("") && createList.toList().size()!=0){
+//                alert1("วันที่");
+//            }
+//            else if(!(OrderNumInput.getText().equals("")) && !(datePick.getEditor().getText().equals("")) && createList.toList().size()==0){
+//                alert1("สินค้า");
+//            }
+//            else if(OrderNumInput.getText().equals("") && datePick.getEditor().getText().equals("") && createList.toList().size()!=0){
+//                alert1("ออเดอร์-วันที่");
+//            }
+//            else if(!(OrderNumInput.getText().equals("")) && datePick.getEditor().getText().equals("") && createList.toList().size()==0){
+//                alert1("สินค้า-วันที่");
+//            }
+//            else if(OrderNumInput.getText().equals("") && !(datePick.getEditor().getText().equals("")) && createList.toList().size()==0){
+//                alert1("สินค้า-ออเดอร์");
+//            }
+//            else {
+//                String rqNo = "RQ"+rqNumFormat.format(rqList.toList().size()+1);
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
+//                String rqDate = LocalDateTime.now().format(formatter);
+//                String dueDate = datePick.getValue().toString();
+//                ReqForm createReq = new ReqForm(rqNo,rqDate,dueDate,"","Waiting",OrderNumInput.getText(),account.getUsername(), account.getName());
+//                service.addRqForm(createReq);
+//                service.addRqList(rqNo,createList);
+//                clearForm();
+//                ReqList.toFront();
+//                showSuccess(rqNo);
+//                initialize();
+//            }
+//        }
+//    }
+    public void alert(String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ไม่สามารถเพิ่มสินค้าได้");
+        alert.setHeaderText("กรุณาตรวจกรอกข้อมูลให้ครบถ้วน");
+        if(message.equals("ชื่อสินค้า")){
+            alert.setContentText("กรุณากรอกชื่อสินค้า");
+        }
+        else if(message.equals("คุณสมบัติ")){
+            alert.setContentText("กรุณากรอกคุณสมบัติของสินค้า");
+        }
+        else{
+            alert.setContentText("กรุณากรอกคุณสมบัติของสินค้า\nกรุณากรอกชื่อสินค้า");
+        }
+        alert.showAndWait();
     }
 
     public void setAccount(Account account){

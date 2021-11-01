@@ -1,8 +1,7 @@
 package sa_project.service;
 
 import sa_project.DatabaseConnection;
-import sa_project.model.Products;
-import sa_project.model.ProductsList;
+import sa_project.model.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -12,9 +11,11 @@ import java.sql.Statement;
 public class productService {
 
     private ProductsList productsList;
+    private CategoryList categoryList;
 
     public productService() {
         productsList = new ProductsList();
+        categoryList = new CategoryList();
     }
 
     private void readProducts(String query) throws SQLException {
@@ -32,8 +33,31 @@ public class productService {
         }
     }
 
+    private void readCategory(String query) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        ResultSet queryResult = statement.executeQuery(query);
+        while (queryResult.next()) {
+            String categoryName = queryResult.getString("Ctg_name");
+            String initialName = queryResult.getString("Initials");
+            Category category = new Category(categoryName, initialName);
+            categoryList.addCategory(category);
+        }
+    }
+    public void updateProductForm(String query) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        statement.executeUpdate(query);
+    }
+
     public ProductsList getProductsList(String query) throws SQLException {
         readProducts(query);
         return productsList;
+    }
+    public CategoryList getCategoryList(String query) throws SQLException {
+        readCategory(query);
+        return categoryList;
     }
 }

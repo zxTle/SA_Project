@@ -6,18 +6,20 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import sa_project.model.Account;
-import sa_project.model.ReqForm;
-import sa_project.model.ReqList;
+import sa_project.model.*;
 import sa_project.service.reqService;
 
 import java.io.IOException;
@@ -34,23 +36,30 @@ public class InventoryStockOutController {
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #61BDF6;";
     private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
-    @FXML private Label dateLabel,usernameLabel,nameLabel;
-    @FXML private Button rqListBtn, listRQBtn, logoutBtn;
+    @FXML private Label dateLabel,usernameLabel,nameLabel,rqNum,orNum,empName,rqDate,rqDue,rqShipDate;
+    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn;
+    @FXML private TextField inputSearch;
     @FXML private TableView<ReqForm> reqTable;
     @FXML private TableColumn<ReqForm,String> reqNo;
     @FXML private TableColumn<ReqForm,String> reqEmp;
     @FXML private TableColumn<ReqForm,String> status;
     @FXML private TableColumn<ReqForm,Date> reqDate;
     @FXML private TableColumn<ReqForm,Date> reqDueDate;
-    @FXML private ChoiceBox<String> type;
-    @FXML private Pane reqList;
+
+    @FXML private TableView<ProductDoc> reqTableDetail;
+    @FXML private TableColumn<ProductDoc,Integer> itemNum;
+    @FXML private TableColumn<ProductDoc,String> product;
+    @FXML private TableColumn<ProductDoc,String> description;
+    @FXML private TableColumn<ProductDoc,Integer> qty;
+    @FXML private TableColumn<ProductDoc,Integer> inventory;
+    @FXML private ChoiceBox<String> typeChoice;
+    @FXML private Pane reqList,purchaseProduct,reqDetails;
     private reqService service;
     private NumberFormat rqNumFormat = new DecimalFormat("0000");
     private ReqList rqList;
+    private ReqForm rqselect;
+    private ProductsDocList prList;
     private Account account;
-
-    public InventoryStockOutController() {
-    }
 
     public void initialize(){
         Platform.runLater(new Runnable() {
@@ -79,6 +88,44 @@ public class InventoryStockOutController {
         reqDueDate.setCellValueFactory(new PropertyValueFactory<>("rqDueDate"));
         status.setCellValueFactory(new PropertyValueFactory<>("rqStatus"));
         reqTable.setItems(reqList);
+
+        FilteredList<ReqForm> searchFilter = new FilteredList<>(reqList, b -> true);
+        inputSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchFilter.setPredicate(req -> {
+                if(newValue == null || newValue.isEmpty()) return true;
+                if(req.getRqNumber().indexOf(newValue) != -1 || req.getRqStatus().indexOf(newValue) != -1
+                        || req.getEmpName().indexOf(newValue) != -1 || req.getEmpId().indexOf(newValue) != -1
+                        || req.getRqNumber().toLowerCase().indexOf(newValue) != -1 || req.getRqStatus().toLowerCase().indexOf(newValue) != -1
+                        || req.getEmpName().toLowerCase().indexOf(newValue) != -1 || req.getEmpId().toLowerCase().indexOf(newValue) != -1) return true;
+                else return false;
+            });
+        });
+        SortedList<ReqForm> sortedReq = new SortedList<>(searchFilter);
+        sortedReq.comparatorProperty().bind(reqTable.comparatorProperty());
+        reqTable.setItems(sortedReq);
+    }
+    @FXML public void tableRowOnMouseClick(MouseEvent mouseEvent)  {
+        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            if(mouseEvent.getClickCount() == 2 && !reqTable.getSelectionModel().getSelectedCells().isEmpty()) {
+                ReqForm clickedReq = reqTable.getSelectionModel().getSelectedItem();
+                rqselect = clickedReq;
+                prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description,Qty_onhand,(Qty_onhand-Rq_qty) AS amount FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+clickedReq.getRqNumber() + "'");
+                reqDetails.toFront();
+                rqNum.setText(clickedReq.getRqNumber());
+                orNum.setText(clickedReq.getOrderNum());
+                empName.setText(clickedReq.getEmpId()+" , "+clickedReq.getEmpName());
+                rqDate.setText(clickedReq.getRqDate());
+                rqDue.setText(clickedReq.getRqDueDate());
+                rqShipDate.setText(clickedReq.getDeliveriedDate());
+                ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
+                itemNum.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+                product.setCellValueFactory(new PropertyValueFactory<>("productName"));
+                description.setCellValueFactory(new PropertyValueFactory<>("description"));
+                qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+                inventory.setCellValueFactory(new PropertyValueFactory<>("onHand"));
+                reqTableDetail.setItems(productList);
+            }
+        }
     }
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
         if(menu.getSource() == listRQBtn){
@@ -93,8 +140,19 @@ public class InventoryStockOutController {
         }
         else if(menu.getSource() == rqListBtn){
             rqListBtn.setStyle(styleHover);
+            purchaseProductBtn.setStyle(styleNormal);
             rqListBtn.setOnMouseExited(event -> rqListBtn.setStyle(styleHover));
             reqList.toFront();
+        }
+        else if(menu.getSource() == purchaseProductBtn){
+            purchaseProductBtn = (Button) menu.getSource();
+            Stage stage = (Stage) purchaseProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryPurchaseProduct.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryPurchaseProductController controller = loader.getController();
+            controller.setAccount(account);
+
+            stage.show();
         }
     }
     @FXML public void handleLogOutBtn(ActionEvent event) throws IOException {
