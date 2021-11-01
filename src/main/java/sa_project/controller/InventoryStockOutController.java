@@ -37,7 +37,7 @@ public class InventoryStockOutController {
     private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
     @FXML private Label dateLabel,usernameLabel,nameLabel,rqNum,orNum,empName,rqDate,rqDue,rqShipDate;
-    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn;
+    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn,verifyBtn;
     @FXML private TextField inputSearch;
     @FXML private TableView<ReqForm> reqTable;
     @FXML private TableColumn<ReqForm,String> reqNo;
@@ -52,6 +52,7 @@ public class InventoryStockOutController {
     @FXML private TableColumn<ProductDoc,String> description;
     @FXML private TableColumn<ProductDoc,Integer> qty;
     @FXML private TableColumn<ProductDoc,Integer> inventory;
+    @FXML private TableColumn<ProductDoc,Integer> productLeft;
     @FXML private ChoiceBox<String> typeChoice;
     @FXML private Pane reqList,purchaseProduct,reqDetails;
     private reqService service;
@@ -123,6 +124,7 @@ public class InventoryStockOutController {
                 description.setCellValueFactory(new PropertyValueFactory<>("description"));
                 qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
                 inventory.setCellValueFactory(new PropertyValueFactory<>("onHand"));
+                productLeft.setCellValueFactory(new PropertyValueFactory<>("itemNumForecast"));
                 reqTableDetail.setItems(productList);
             }
         }

@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,9 +14,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
+import sa_project.service.productService;
 import sa_project.service.reqService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -32,9 +35,13 @@ public class InventoryPurchaseProductController {
     private Label dateLabel,usernameLabel,nameLabel,rqNum,orNum,empName,rqDate,rqDue,rqShipDate;
     @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn;
     @FXML private Pane reqList,purchaseProduct,reqDetails;
+    @FXML private MenuButton typeChoice;
+    private CategoryList caList;
+    private productService productService;
     private reqService service;
     private NumberFormat rqNumFormat = new DecimalFormat("0000");
     private ReqList rqList;
+    private ProductsList productsList;
     private ReqForm rqselect;
     private ProductsDocList prList;
     private Account account;
@@ -46,9 +53,23 @@ public class InventoryPurchaseProductController {
             @Override
             public void run() {
                 service = new reqService();
+                productService = new productService();
                 usernameLabel.setText(account.getUsername());
                 nameLabel.setText(account.getName());
                 purchaseProductBtn.setStyle(styleHover);
+                EventHandler<ActionEvent> handler = this::setSelectLabel;
+                productService =  new productService();
+                try {
+                    productsList = productService.getProductsList("SELECT * FROM product_stocks;");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                productsList.setMenuItem(typeChoice,handler);
+            }
+
+            private void setSelectLabel(ActionEvent event){
+                MenuItem source = (MenuItem) event.getSource();
+                typeChoice.setText(source.getText());
             }
         });
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
