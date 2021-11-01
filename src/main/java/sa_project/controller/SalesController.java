@@ -155,7 +155,7 @@ public class SalesController {
             listRQBtn.setOnMouseExited(event -> listRQBtn.setStyle(styleNormal));
             rqNumFm.setText("เลขที่ใบเบิก : "+"RQ"+rqNumFormat.format(rqList.toList().size()+1));
             rqEmpFm.setText("ผู้ออกใบเบิก : "+account.getName());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy", new Locale("en"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd", new Locale("en"));
             rqDateFm.setText("วันที่ออกใบเบิก : "+(LocalDateTime.now().format(formatter)));
         }
         else if(menu.getSource() == listRQBtn){
@@ -259,17 +259,17 @@ public class SalesController {
                 alert1("สินค้า-ออเดอร์");
             }
             else {
-            String rqNo = "RQ"+rqNumFormat.format(rqList.toList().size()+1);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
-            String rqDate = LocalDateTime.now().format(formatter);
-            String dueDate = datePick.getValue().toString();
-            ReqForm createReq = new ReqForm(rqNo,rqDate,dueDate,"","Waiting",OrderNumInput.getText(),account.getUsername(), account.getName());
-            service.addRqForm(createReq);
-            service.addRqList(rqNo,createList);
-            clearForm();
-            ReqList.toFront();
-            showSuccess(rqNo);
-            initialize();
+                String rqNo = "RQ"+rqNumFormat.format(rqList.toList().size()+1);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
+                String rqDate = LocalDateTime.now().format(formatter);
+                String dueDate = datePick.getValue().toString();
+                ReqForm createReq = new ReqForm(rqNo,rqDate,dueDate,"","Waiting",OrderNumInput.getText(),account.getUsername(), account.getName());
+                service.addRqForm(createReq);
+                service.addRqList(rqNo,createList);
+                clearForm();
+                ReqList.toFront();
+                showSuccess(rqNo);
+                initialize();
             }
         }
     }

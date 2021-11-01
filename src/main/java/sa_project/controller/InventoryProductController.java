@@ -22,12 +22,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import sa_project.DatabaseConnection;
 import sa_project.model.*;
 import sa_project.service.productService;
 import sa_project.service.reqService;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -58,6 +64,7 @@ public class InventoryProductController {
     private ProductsDocList prList;
     private ProductDoc thisProduct;
     private CategoryList caList;
+    private NumberFormat prNumFormat = new DecimalFormat("000");
     private boolean checkClick=false;
 
 
@@ -99,10 +106,13 @@ public class InventoryProductController {
             if(productSpec.getText().isEmpty() && productName.getText().isEmpty()){
                 alert("คุณสมบัติ-ชื่อสินค้า");
             }
-//            else{
-//                productService.updateProductForm("Update product_stocks SET Product_name =" + "'"+ productName.getText() +"'" +
-//                        "WHERE ProductID=");
-//            }
+            else{
+                productService.updateProductForm("UPDATE product_stocks SET Product_name=" + "'"+productName.getText()+ "'"+",Description=" + "'"+productSpec.getText()+"'"+
+                        " WHERE Product_id=" + "'"+thisProduct.getProductId()+ "'");
+                productList.toFront();
+                showSuccess2();
+                initialize();
+            }
         }
         if(click.getSource() == EditBtn){
             productName.setDisable(false);
@@ -167,7 +177,41 @@ public class InventoryProductController {
         caList = productService.getCategoryList("SELECT Ctg_name, Initials FROM category");
         caList.setMenuItem(typeChoice,handler);
     }
-    @FXML public void handleAddItemBtn(ActionEvent event){
+    @FXML public void handleAddItemBtn(ActionEvent event) throws SQLException {
+        if(pNameField.getText().isEmpty() && !desField.getText().isEmpty()){
+            alert("ชื่อสินค้า");
+        }
+        else if(desField.getText().isEmpty() && !pNameField.getText().isEmpty()){
+            alert("คุณสมบัติ");
+        }
+        else if(desField.getText().isEmpty() && pNameField.getText().isEmpty()){
+            alert("คุณสมบัติ-ชื่อสินค้า");
+        }
+        else if(desField.getText().isEmpty() && pNameField.getText().isEmpty() && typeChoice.getText().isEmpty()){
+            alert("คุณสมบัติ-ชื่อสินค้า-ประเภท");
+        }
+        else{
+            String id = typeChoice.getText().split(":")[0];
+            String type = typeChoice.getText().split(":")[1];
+            DatabaseConnection dbConnect = new DatabaseConnection();
+            Connection connectDBSales = dbConnect.getConnection();
+            String query = "SELECT count(Product_type)+1 AS name FROM product_stocks WHERE Product_type='"+type+"'";
+            Statement statement = connectDBSales.createStatement();
+            ResultSet idProduct = statement.executeQuery(query);
+            idProduct.next();
+            int partTwo = idProduct.getInt("name");
+            String idFull = id+prNumFormat.format(partTwo);
+            String name = pNameField.getText();
+            String description = desField.getText();
+            ProductForm addProduct = new ProductForm(idFull,type,name,description);
+            productService.addProductForm(addProduct);
+            pNameField.clear();
+            desField.clear();
+            typeChoice.setText("ประเภท");
+            productList.toFront();
+            showSuccess(name);
+            initialize();
+        }
     }
     @FXML public void handleCancelAddProductBtn(ActionEvent event){
         pNameField.clear();
@@ -222,9 +266,24 @@ public class InventoryProductController {
         else if(message.equals("คุณสมบัติ")){
             alert.setContentText("กรุณากรอกคุณสมบัติของสินค้า");
         }
-        else{
+        else if(message.equals("คุณสมบัติ-ชื่อสินค้า")){
             alert.setContentText("กรุณากรอกคุณสมบัติของสินค้า\nกรุณากรอกชื่อสินค้า");
         }
+        else{
+            alert.setContentText("กรุณากรอกคุณสมบัติของสินค้า\nกรุณากรอกชื่อสินค้า\nกรุณาเลือกประเภทของสินค้า");
+        }
+        alert.showAndWait();
+    }
+    private void showSuccess(String prName){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("เพิ่มสินค้าสำเร็จ");
+        alert.setHeaderText("เพิ่มสินค้า "+prName+ " สำเร็จ");
+        alert.showAndWait();
+    }
+    private void showSuccess2(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("เเก้ไขสำเร็จ");
+        alert.setHeaderText("เเก้ไขข้อมูลสินค้าสำเร็จ");
         alert.showAndWait();
     }
 

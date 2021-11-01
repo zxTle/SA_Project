@@ -45,10 +45,22 @@ public class productService {
             categoryList.addCategory(category);
         }
     }
-    public void updateProductForm(String query) throws SQLException {
+    public void addProductForm(ProductForm prForm) throws SQLException {
         DatabaseConnection dbConnect = new DatabaseConnection();
         Connection connectDBSales = dbConnect.getConnection();
         Statement statement = connectDBSales.createStatement();
+        String prNo ="'" + prForm.getProductID()+"'" ;
+        String prType = "'" +prForm.getProductType()+"'" ;
+        String prName = "'" +prForm.getProductName()+"'" ;
+        String prDes = "'" +prForm.getDescription()+"'" ;
+        String toInsert ="("+prNo+","+prType+","+prName+","+prDes+",0,0,0)";
+        String query = "INSERT INTO product_stocks (Product_id, Product_type, Product_name, Description, Qty_onhand, Total_qty_req, Qty_forecast) VALUES " +toInsert;
+        statement.executeUpdate(query);
+    }
+    public void updateProductForm(String query) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBProduct = dbConnect.getConnection();
+        Statement statement = connectDBProduct.createStatement();
         statement.executeUpdate(query);
     }
 

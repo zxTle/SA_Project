@@ -21,14 +21,14 @@
    <children>
       <Pane fx:id="purchaseProduct" layoutX="316.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
          <children>
-            <TableView layoutY="342.0" prefHeight="426.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
+            <TableView fx:id="prTable" layoutY="342.0" prefHeight="426.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
                <columns>
-                  <TableColumn prefWidth="68.0" text="ลำดับ" />
-                  <TableColumn prefWidth="277.0" text="สินค้า" />
-                  <TableColumn minWidth="0.0" prefWidth="276.0" text="รายละเอียด" />
-                  <TableColumn prefWidth="114.0" text="จำนวน&#10;ขอเบิก" />
-                  <TableColumn prefWidth="114.0" text="คงคลัง" />
-                  <TableColumn prefWidth="114.0" text="คงเหลือ" />
+                  <TableColumn fx:id="prOrder" prefWidth="68.0" text="ลำดับ" />
+                  <TableColumn fx:id="prProduct" prefWidth="277.0" text="สินค้า" />
+                  <TableColumn fx:id="prProductDetail" minWidth="0.0" prefWidth="276.0" text="รายละเอียด" />
+                  <TableColumn fx:id="rqProductNum" prefWidth="114.0" text="จำนวน&#10;ขอเบิก" />
+                  <TableColumn fx:id="inventory" prefWidth="114.0" text="คงคลัง" />
+                  <TableColumn fx:id="availableForecast" prefWidth="114.0" text="คงเหลือ" />
                </columns>
             </TableView>
             <Pane layoutX="52.0" layoutY="34.0" prefHeight="70.0" prefWidth="614.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
@@ -43,7 +43,7 @@
                         <Font size="25.0" />
                      </font>
                   </Label>
-                  <Label fx:id="reqNum" layoutX="298.0" layoutY="13.0" prefHeight="45.0" prefWidth="246.0" styleClass="position" stylesheets="@css/style.css" />
+                  <Label fx:id="prNum" layoutX="309.0" layoutY="13.0" prefHeight="45.0" prefWidth="246.0" styleClass="position" stylesheets="@css/style.css" />
                </children>
             </Pane>
             <Pane layoutX="60.0" layoutY="130.0" prefHeight="45.0" prefWidth="407.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
@@ -53,7 +53,7 @@
                         <Font size="25.0" />
                      </font>
                   </Label>
-                  <Label fx:id="reqDate" layoutX="235.0" layoutY="5.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" />
+                  <Label fx:id="prDate" layoutX="235.0" layoutY="5.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" />
                </children>
             </Pane>
             <Pane layoutX="60.0" layoutY="197.0" prefHeight="45.0" prefWidth="407.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
@@ -83,7 +83,7 @@
                   <Insets />
                </opaqueInsets>
             </Button>
-            <Button alignment="CENTER" layoutX="806.0" layoutY="45.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="106.0" styleClass="btn-top" stylesheets="@css/button.css" text="ละทิ้ง" textFill="#081f37">
+            <Button fx:id="discardBtn" alignment="CENTER" layoutX="806.0" layoutY="45.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="106.0" styleClass="btn-top" stylesheets="@css/button.css" text="ละทิ้ง" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
@@ -98,7 +98,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <DatePicker fx:id="reqDue" layoutX="702.0" layoutY="134.0" prefHeight="38.0" prefWidth="210.0" />
+            <DatePicker fx:id="prDue" layoutX="702.0" layoutY="134.0" prefHeight="38.0" prefWidth="210.0" />
             <Button fx:id="AddBtn" layoutX="506.0" layoutY="271.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="59.0" styleClass="btn-top" stylesheets="@css/button.css">
                <font>
                   <Font size="20.0" />
