@@ -328,8 +328,8 @@
             <TableView fx:id="claimsTable" layoutY="76.0" prefHeight="690.0" prefWidth="970.0" styleClass="table" stylesheets="@css/table.css">
                <columns>
                   <TableColumn fx:id="rtNumCol" prefWidth="332.0" text="เลขที่ใบเคลม" />
-                  <TableColumn fx:id="inNumCol" prefWidth="403.99993896484375" text="เลขที่ใบรับของ" />
-                  <TableColumn fx:id="rtStatus" prefWidth="232.0" text="สถานะ" />
+                  <TableColumn fx:id="inNumCol" prefWidth="414.39996337890625" text="เลขที่ใบรับของ" />
+                  <TableColumn fx:id="rtStatus" prefWidth="223.2000732421875" text="สถานะ" />
                </columns>
             </TableView>
          </children>
@@ -360,8 +360,8 @@
                   <TableColumn fx:id="prNum" prefWidth="148.26669311523438" text="เลขที่ใบสั่งซื้อ" />
                   <TableColumn fx:id="prDate" prefWidth="241.33331298828125" text="วันที่ออกใบสั่งซื้อ" />
                   <TableColumn fx:id="prEmp" prefWidth="208.53326416015625" text="ผู้ออกใบสั่งซื้อ" />
-                  <TableColumn fx:id="prDuedate" prefWidth="222.40008544921875" text="วันกำหนดรับ" />
-                  <TableColumn fx:id="prStatus" minWidth="0.0" prefWidth="148.0" text="สถานะ" />
+                  <TableColumn fx:id="prDuedate" prefWidth="202.666748046875" text="วันกำหนดรับ" />
+                  <TableColumn fx:id="prStatus" prefWidth="167.4664306640625" text="สถานะ" />
                </columns>
             </TableView>
          </children>

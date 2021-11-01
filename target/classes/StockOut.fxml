@@ -16,9 +16,137 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sa_project.controller.InventoryStockOutController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sa_project.controller.InventoryStockOutController">
    <children>
-      <Pane prefHeight="770.0" prefWidth="317.0" style="-fx-background-color: #61BDF6;">
+      <Pane fx:id="reqDetails" layoutX="317.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
+         <children>
+            <TableView fx:id="reqTableDetail" layoutY="342.0" prefHeight="426.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
+              <columns>
+                <TableColumn fx:id="itemNum" prefWidth="68.0" text="ลำดับ" />
+                <TableColumn fx:id="product" prefWidth="277.0" text="สินค้า" />
+                  <TableColumn fx:id="description" minWidth="0.0" prefWidth="276.0" text="รายละเอียด" />
+                  <TableColumn fx:id="qty" prefWidth="114.0" text="จำนวน&#10;ขอเบิก" />
+                  <TableColumn fx:id="inventory" prefWidth="114.0" text="คงคลัง" />
+                  <TableColumn fx:id="productLeft" prefWidth="114.0" text="คงเหลือ" />
+              </columns>
+            </TableView>
+            <Pane layoutX="52.0" layoutY="34.0" prefHeight="70.0" prefWidth="614.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="42.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@image/sticky-note-solid.png" />
+                     </image>
+                  </ImageView>
+                  <Label contentDisplay="CENTER" layoutX="100.0" layoutY="13.0" prefHeight="36.0" prefWidth="146.0" styleClass="position" stylesheets="@css/style.css" text="เลขที่ใบเบิก:" textFill="#081f37">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <TextField alignment="CENTER" layoutX="493.0" layoutY="20.0" prefHeight="31.0" prefWidth="100.0" style="-fx-background-radius: 50; -fx-background-color: white;" styleClass="status-field" stylesheets="@css/Eng.css" text="Waiting" />
+                  <Label fx:id="rqNum" layoutX="246.0" layoutY="13.0" prefHeight="45.0" prefWidth="200.0" styleClass="position" stylesheets="@css/style.css" />
+               </children>
+            </Pane>
+            <Pane layoutX="60.0" layoutY="130.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="146.0" styleClass="show_label" stylesheets="@css/style.css" text="เลขออเดอร์:" textFill="#081f37">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="orNum" layoutX="154.0" layoutY="5.0" prefHeight="36.0" prefWidth="134.0" styleClass="show_label" stylesheets="@css/style.css" />
+               </children>
+            </Pane>
+            <Pane layoutX="60.0" layoutY="197.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="152.0" styleClass="show_label" stylesheets="@css/style.css" text="ผู้ออกใบเบิก:" textFill="#081f37">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="empName" layoutX="159.0" layoutY="4.0" prefHeight="36.0" prefWidth="210.0" styleClass="show_label" stylesheets="@css/style.css" />
+               </children>
+            </Pane>
+            <Pane layoutX="60.0" layoutY="265.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" text="วันที่ออกใบเบิก:" textFill="#081f37">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="rqDate" layoutX="194.0" layoutY="5.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" />
+               </children>
+            </Pane>
+            <Pane layoutX="488.0" layoutY="130.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="146.0" styleClass="show_label" stylesheets="@css/style.css" text="วันกำหนดส่ง:" textFill="#081f37">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="rqDue" layoutX="176.0" layoutY="5.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" />
+               </children>
+            </Pane>
+            <Pane layoutX="488.0" layoutY="197.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
+               <children>
+                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="146.0" styleClass="show_label" stylesheets="@css/style.css" text="วันนำส่งสินค้า:" textFill="#081f37">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="rqShipDate" layoutX="170.0" layoutY="5.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" />
+                  <Label fx:id="rqDue1" layoutX="180.0" layoutY="5.0" prefHeight="36.0" prefWidth="27.0" styleClass="show_label" stylesheets="@css/style.css" text="-" />
+               </children>
+            </Pane>
+            <Button alignment="CENTER" layoutX="634.0" layoutY="263.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="124.0" styleClass="btn-top" stylesheets="@css/button.css" text="ส่งของ" textFill="#081f37">
+               <font>
+                  <Font size="1.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="28.0" preserveRatio="true">
+                     <image>
+                        <Image url="@image/truck-solid.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="CENTER" layoutX="488.0" layoutY="263.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="124.0" styleClass="btn-top" stylesheets="@css/button.css" text="สั่งของ" textFill="#081f37">
+               <font>
+                  <Font size="1.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="28.0" preserveRatio="true">
+                     <image>
+                        <Image url="@image/dollar-sign-solid.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </Pane>
+      <Pane fx:id="reqList" layoutX="316.0" layoutY="-2.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
+         <children>
+            <TextField fx:id="inputSearch" layoutX="680.0" layoutY="20.0" prefHeight="24.0" prefWidth="248.0" promptText="ค้นหาใบเบิก..." style="-fx-border-color: #61BDF6; -fx-border-width: 3px; -fx-border-radius: 50px; -fx-background-radius: 50px;">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+            <TableView fx:id="reqTable" layoutY="90.0" onMouseClicked="#tableRowOnMouseClick" prefHeight="681.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
+              <columns>
+                <TableColumn fx:id="reqNo" prefWidth="113.60000610351562" text="เลขที่ใบเบิก" />
+                <TableColumn fx:id="reqDate" prefWidth="173.60006713867188" text="วันที่ออกใบเบิก" />
+                  <TableColumn fx:id="reqEmp" prefWidth="238.4000244140625" text="ผู้ออกใบเบิก" />
+                  <TableColumn fx:id="reqDueDate" prefWidth="213.5999755859375" text="วันกำหนดส่ง" />
+                  <TableColumn fx:id="status" prefWidth="228.0" text="สถานะ" />
+              </columns>
+            </TableView>
+         </children></Pane>
+      <Pane layoutX="-1.0" prefHeight="770.0" prefWidth="317.0" style="-fx-background-color: #61BDF6;">
          <children>
             <Pane layoutX="25.0" layoutY="19.0" prefHeight="70.0" prefWidth="267.0" style="-fx-background-color: #081F37; -fx-background-radius: 50px;">
                <children>
@@ -128,133 +256,5 @@
             </MenuButton>
          </children>
       </Pane>
-      <Pane fx:id="reqDetails" layoutX="317.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
-         <children>
-            <TableView fx:id="reqTableDetail" layoutY="342.0" prefHeight="426.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
-              <columns>
-                <TableColumn fx:id="itemNum" prefWidth="68.0" text="ลำดับ" />
-                <TableColumn fx:id="product" prefWidth="277.0" text="สินค้า" />
-                  <TableColumn fx:id="description" minWidth="0.0" prefWidth="276.0" text="รายละเอียด" />
-                  <TableColumn fx:id="qty" prefWidth="114.0" text="จำนวน&#10;ขอเบิก" />
-                  <TableColumn fx:id="inventory" prefWidth="114.0" text="คงคลัง" />
-                  <TableColumn fx:id="productLeft" prefWidth="114.0" text="คงเหลือ" />
-              </columns>
-            </TableView>
-            <Pane layoutX="52.0" layoutY="34.0" prefHeight="70.0" prefWidth="614.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
-               <children>
-                  <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="42.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@image/sticky-note-solid.png" />
-                     </image>
-                  </ImageView>
-                  <Label contentDisplay="CENTER" layoutX="100.0" layoutY="13.0" prefHeight="36.0" prefWidth="146.0" styleClass="position" stylesheets="@css/style.css" text="เลขที่ใบเบิก:" textFill="#081f37">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <TextField alignment="CENTER" layoutX="493.0" layoutY="20.0" prefHeight="31.0" prefWidth="100.0" style="-fx-background-radius: 50; -fx-background-color: white;" styleClass="status-field" stylesheets="@css/Eng.css" text="Waiting" />
-                  <Label fx:id="rqNum" layoutX="246.0" layoutY="13.0" prefHeight="45.0" prefWidth="200.0" styleClass="position" stylesheets="@css/style.css" />
-               </children>
-            </Pane>
-            <Pane layoutX="60.0" layoutY="130.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
-               <children>
-                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="146.0" styleClass="show_label" stylesheets="@css/style.css" text="เลขออเดอร์:" textFill="#081f37">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="orNum" layoutX="154.0" layoutY="5.0" prefHeight="36.0" prefWidth="134.0" styleClass="show_label" stylesheets="@css/style.css" />
-               </children>
-            </Pane>
-            <Pane layoutX="60.0" layoutY="197.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
-               <children>
-                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="152.0" styleClass="show_label" stylesheets="@css/style.css" text="ผู้ออกใบเบิก:" textFill="#081f37">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="empName" layoutX="159.0" layoutY="4.0" prefHeight="36.0" prefWidth="210.0" styleClass="show_label" stylesheets="@css/style.css" />
-               </children>
-            </Pane>
-            <Pane layoutX="60.0" layoutY="265.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
-               <children>
-                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" text="วันที่ออกใบเบิก:" textFill="#081f37">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="rqDate" layoutX="194.0" layoutY="5.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" />
-               </children>
-            </Pane>
-            <Pane layoutX="488.0" layoutY="130.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
-               <children>
-                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="146.0" styleClass="show_label" stylesheets="@css/style.css" text="วันกำหนดส่ง:" textFill="#081f37">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="rqDue" layoutX="176.0" layoutY="5.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" />
-               </children>
-            </Pane>
-            <Pane layoutX="488.0" layoutY="197.0" prefHeight="45.0" prefWidth="387.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
-               <children>
-                  <Label contentDisplay="CENTER" layoutX="24.0" layoutY="4.0" prefHeight="36.0" prefWidth="146.0" styleClass="show_label" stylesheets="@css/style.css" text="วันนำส่งสินค้า:" textFill="#081f37">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="rqShipDate" layoutX="170.0" layoutY="5.0" prefHeight="36.0" prefWidth="158.0" styleClass="show_label" stylesheets="@css/style.css" />
-                  <Label fx:id="rqDue1" layoutX="180.0" layoutY="5.0" prefHeight="36.0" prefWidth="27.0" styleClass="show_label" stylesheets="@css/style.css" text="-" />
-               </children>
-            </Pane>
-            <Button fx:id="verifyBtn" alignment="CENTER" layoutX="488.0" layoutY="263.0" mnemonicParsing="false" onAction="#handleVerifyBtn" prefHeight="49.0" prefWidth="146.0" styleClass="btn-top" stylesheets="@css/button.css" text="ตรวจสอบ" textFill="#081f37">
-               <font>
-                  <Font size="1.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="28.0" preserveRatio="true">
-                     <image>
-                        <Image url="@image/check-circle-solid.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button alignment="CENTER" layoutX="642.0" layoutY="263.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="124.0" styleClass="btn-top" stylesheets="@css/button.css" text="ส่งของ" textFill="#081f37">
-               <font>
-                  <Font size="1.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="28.0" preserveRatio="true">
-                     <image>
-                        <Image url="@image/truck-solid.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </Pane>
-      <Pane fx:id="reqList" layoutX="317.0" layoutY="-2.0" prefHeight="768.0" prefWidth="963.0" style="-fx-background-color: #081F37;">
-         <children>
-            <TextField fx:id="inputSearch" layoutX="680.0" layoutY="20.0" prefHeight="24.0" prefWidth="248.0" promptText="ค้นหาใบเบิก..." style="-fx-border-color: #61BDF6; -fx-border-width: 3px; -fx-border-radius: 50px; -fx-background-radius: 50px;">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </TextField>
-            <TableView fx:id="reqTable" layoutY="90.0" onMouseClicked="#tableRowOnMouseClick" prefHeight="681.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
-              <columns>
-                <TableColumn fx:id="reqNo" prefWidth="113.60000610351562" text="เลขที่ใบเบิก" />
-                <TableColumn fx:id="reqDate" prefWidth="173.60006713867188" text="วันที่ออกใบเบิก" />
-                  <TableColumn fx:id="reqEmp" prefWidth="238.4000244140625" text="ผู้ออกใบเบิก" />
-                  <TableColumn fx:id="reqDueDate" prefWidth="213.5999755859375" text="วันกำหนดส่ง" />
-                  <TableColumn fx:id="status" prefWidth="228.0" text="สถานะ" />
-              </columns>
-            </TableView>
-         </children></Pane>
    </children>
 </AnchorPane>

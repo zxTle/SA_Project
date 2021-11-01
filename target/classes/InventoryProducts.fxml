@@ -216,7 +216,7 @@
                   <String fx:value="field" />
                </styleClass>
             </TextField>
-            <Button fx:id="cancelAddBtn" layoutX="656.0" layoutY="54.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="125.0" styleClass="btn-top" stylesheets="@css/button.css" text="ละทิ้ง">
+            <Button fx:id="cancelAddProductBtn" layoutX="656.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleCancelAddProductBtn" prefHeight="47.0" prefWidth="125.0" styleClass="btn-top" stylesheets="@css/button.css" text="ละทิ้ง">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>

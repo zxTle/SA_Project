@@ -16,7 +16,6 @@
     -fx-font-size: 20px;
     -fx-font-family: 'Kanit';
 }
-
 .tabdown .menu-item:focused{
     -fx-background-color : #61BDF6;
     -fx-background-radius : 10;
