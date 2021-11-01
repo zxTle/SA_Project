@@ -10,17 +10,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
 import sa_project.service.reqService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 
 public class InventoryPurchaseProductController {
@@ -32,6 +33,8 @@ public class InventoryPurchaseProductController {
     private Label dateLabel,usernameLabel,nameLabel,rqNum,orNum,empName,rqDate,rqDue,rqShipDate;
     @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn;
     @FXML private Pane reqList,purchaseProduct,reqDetails;
+    @FXML private MenuButton receiveProductBtn;
+    @FXML private MenuItem receiveMenuBtn,claimsMenuBtn;
     private reqService service;
     private NumberFormat rqNumFormat = new DecimalFormat("0000");
     private ReqList rqList;
@@ -58,7 +61,7 @@ public class InventoryPurchaseProductController {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
-    @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
+    @FXML private void handleSidemenu(ActionEvent menu) throws IOException, SQLException {
         if(menu.getSource() == listRQBtn){
             listRQBtn = (Button) menu.getSource();
             Stage stage = (Stage) listRQBtn.getScene().getWindow();
@@ -82,6 +85,28 @@ public class InventoryPurchaseProductController {
         else if(menu.getSource() == purchaseProductBtn){
             purchaseProduct.toFront();
             purchaseProductBtn.setStyle(styleHover);
+        }
+        else if(menu.getSource() == receiveMenuBtn){
+            receiveProductBtn.setText(receiveMenuBtn.getText());
+            receiveProductBtn.setTextFill(Paint.valueOf("#61BDF6"));
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            stage.show();
+
+        }
+        else if(menu.getSource() == claimsMenuBtn){
+            receiveProductBtn.setText(claimsMenuBtn.getText());
+            receiveProductBtn.setTextFill(Paint.valueOf("#61BDF6"));
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            controller.setPaneClaim();
+            stage.show();
         }
     }
     @FXML public void handleLogOutBtn(ActionEvent event) throws IOException {

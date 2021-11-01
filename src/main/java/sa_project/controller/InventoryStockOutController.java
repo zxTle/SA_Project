@@ -23,6 +23,7 @@ import sa_project.model.*;
 import sa_project.service.reqService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ public class InventoryStockOutController {
     private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
     @FXML private Label dateLabel,usernameLabel,nameLabel,rqNum,orNum,empName,rqDate,rqDue,rqShipDate;
-    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn;
+    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn,verifyBtn;
     @FXML private TextField inputSearch;
     @FXML private TableView<ReqForm> reqTable;
     @FXML private TableColumn<ReqForm,String> reqNo;
@@ -52,8 +53,11 @@ public class InventoryStockOutController {
     @FXML private TableColumn<ProductDoc,String> description;
     @FXML private TableColumn<ProductDoc,Integer> qty;
     @FXML private TableColumn<ProductDoc,Integer> inventory;
+    @FXML private TableColumn<ProductDoc,Integer> productLeft;
     @FXML private ChoiceBox<String> typeChoice;
-    @FXML private Pane reqList,purchaseProduct,reqDetails;
+    @FXML private Pane reqList,reqDetails;
+    @FXML private MenuButton receiveProductBtn;
+    @FXML private MenuItem receiveMenuBtn,claimsMenuBtn;
     private reqService service;
     private NumberFormat rqNumFormat = new DecimalFormat("0000");
     private ReqList rqList;
@@ -127,7 +131,25 @@ public class InventoryStockOutController {
             }
         }
     }
-    @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
+    @FXML private void handleVerifyBtn(ActionEvent event){
+        if(event.getSource() == verifyBtn){
+            prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description,Qty_onhand,(Qty_onhand-Rq_qty) AS amount FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+rqselect.getRqNumber() + "'");
+            ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
+            itemNum.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+            product.setCellValueFactory(new PropertyValueFactory<>("productName"));
+            description.setCellValueFactory(new PropertyValueFactory<>("description"));
+            qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            inventory.setCellValueFactory(new PropertyValueFactory<>("onHand"));
+            productLeft.setCellValueFactory(new PropertyValueFactory<>("itemNumForecast"));
+            reqTableDetail.setItems(productList);
+        }
+    }
+    private void updateTable(){
+        ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
+        productLeft.setCellValueFactory(new PropertyValueFactory<>(null));
+        reqTableDetail.setItems(productList);
+    }
+    @FXML private void handleSidemenu(ActionEvent menu) throws IOException, SQLException {
         if(menu.getSource() == listRQBtn){
             listRQBtn = (Button) menu.getSource();
             Stage stage = (Stage) listRQBtn.getScene().getWindow();
@@ -143,6 +165,7 @@ public class InventoryStockOutController {
             purchaseProductBtn.setStyle(styleNormal);
             rqListBtn.setOnMouseExited(event -> rqListBtn.setStyle(styleHover));
             reqList.toFront();
+            updateTable();
         }
         else if(menu.getSource() == purchaseProductBtn){
             purchaseProductBtn = (Button) menu.getSource();
@@ -152,6 +175,26 @@ public class InventoryStockOutController {
             InventoryPurchaseProductController controller = loader.getController();
             controller.setAccount(account);
 
+            stage.show();
+        }
+        else if(menu.getSource() == receiveMenuBtn){
+            receiveProductBtn.setText(receiveMenuBtn.getText());
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            stage.show();
+
+        }
+        else if(menu.getSource() == claimsMenuBtn){
+            receiveProductBtn.setText(claimsMenuBtn.getText());
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            controller.setPaneClaim();
             stage.show();
         }
     }
