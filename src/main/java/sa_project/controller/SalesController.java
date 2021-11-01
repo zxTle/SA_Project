@@ -173,7 +173,7 @@ public class SalesController {
             if(mouseEvent.getClickCount() == 2 && !reqTable.getSelectionModel().getSelectedCells().isEmpty()) {
                 ReqForm clickedReq = reqTable.getSelectionModel().getSelectedItem();
                 rqselect = clickedReq;
-                prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+clickedReq.getRqNumber() + "'");
+                prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description,Qty_onhand,(Qty_onhand-Total_qty_req) AS amount FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+clickedReq.getRqNumber() + "'");
                 reqDetails.toFront();
                 if(rqselect.getRqStatus().equals("Cancelled")||rqselect.getRqStatus().equals("Deliveried")) {CancelReqBtn.setDisable(true);}
                 else {CancelReqBtn.setDisable(false);}
