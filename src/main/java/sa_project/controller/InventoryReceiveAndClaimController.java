@@ -27,6 +27,8 @@ import sa_project.service.retService;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -86,6 +88,7 @@ public class InventoryReceiveAndClaimController {
     private retService rt_service;
     private prService pr_service;
     private productService productService;
+    private NumberFormat inNumFormat = new DecimalFormat("0000");
     public void initialize(){
         Platform.runLater(new Runnable() {
             @Override
@@ -114,6 +117,7 @@ public class InventoryReceiveAndClaimController {
                 receiveProductBtn.setStyle(styleHover);
                 showRetList();
                 showPrList();
+                //"IN"+inNumFormat.format(inFormList.toList().size()+1);
             }
         });
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
