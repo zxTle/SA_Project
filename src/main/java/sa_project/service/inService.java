@@ -1,44 +1,36 @@
 package sa_project.service;
 
 import sa_project.DatabaseConnection;
-import sa_project.model.PrForm;
-import sa_project.model.PrList;
-import sa_project.model.ProductDoc;
-import sa_project.model.ProductsDocList;
+import sa_project.model.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class prService {
-    private PrList prList;
+public class inService {
+    private InList inList;
     private ProductsDocList products;
 
-    public prService() {
-        prList = new PrList();
-        products =  new ProductsDocList();
+    public inService() {
+        inList = new InList();
+        products = new ProductsDocList();
     }
 
-    private void readPrForm(String query) throws SQLException {
+    private void readInForm(String query) throws SQLException {
         DatabaseConnection dbConnect = new DatabaseConnection();
         Connection connectDBInvent = dbConnect.getConnection();
         Statement statement = connectDBInvent.createStatement();
         ResultSet queryResult = statement.executeQuery(query);
         while (queryResult.next()){
-            String prNum = queryResult.getString("PR_no");
-            String prDate = queryResult.getString("PR_date");
-            String prStatus = queryResult.getString("PR_status");
-            String prDue = queryResult.getString("IN_due_date");
+            String inNo = queryResult.getString("IN_no");
+            String inDate = queryResult.getString("IN_date");
             String empId = queryResult.getString("Emp_id");
+            String prNo = queryResult.getString("PR_no");
             String empName = queryResult.getString("Emp_name");
-            PrForm prForm = new PrForm(prNum,prDate,prStatus,prDue,empId,empName);
-            prList.addPrList(prForm);
+            InForm inForm = new InForm(inNo,inDate,prNo,empId);
+            inList.addInList(inForm);
         }
-    }
-    public PrList getAllPrFrom(String query) throws SQLException {
-        readPrForm(query);
-        return prList;
     }
 
     private void readProductList(String query) throws SQLException {
@@ -47,17 +39,18 @@ public class prService {
         Statement statement = connectDBSales.createStatement();
         ResultSet queryResult = statement.executeQuery(query);
         while (queryResult.next()){
-            int itemNo = queryResult.getInt("RQ_item_num");
-            String prId = queryResult.getString("Product_id");
-            String prName = queryResult.getString("Product_name");
+            int itemNo = queryResult.getInt("IN_item_num");
+            String pdId = queryResult.getString("Product_id");
+            String pdName = queryResult.getString("Product_name");
             String des = queryResult.getString("Description");
-            int qty = queryResult.getInt("RQ_qty");
+            int qty = queryResult.getInt("IN_qty");
             int inventory = queryResult.getInt("Qty_onhand");
             int itemForecast = queryResult.getInt("amount");
-            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",inventory,itemForecast);
+            ProductDoc product = new ProductDoc(itemNo,pdId,pdName,des,qty, "",inventory,itemForecast);
             products.addProduct(product);
         }
     }
+
     public ProductsDocList getProductList(String query){
         try {
             products = new ProductsDocList();
@@ -67,5 +60,13 @@ public class prService {
         }
         return products;
     }
+
+    public InList getAllInForm(String query) throws SQLException {
+        readInForm(query);
+        return inList;
+    }
+
+//    public
+
 
 }

@@ -14,10 +14,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
+import sa_project.service.inService;
 import sa_project.service.prService;
 import sa_project.service.retService;
 
@@ -32,10 +35,10 @@ public class InventoryReceiveAndClaimController {
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #61BDF6;";
     private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
-    @FXML private Pane purchaseList,claimList;
+    @FXML private Pane purchaseList,claimList, receivePage;
     @FXML private MenuButton receiveProductBtn;
     @FXML private MenuItem receiveMenuBtn,claimsMenuBtn;
-    @FXML private Label usernameLabel,nameLabel,dateLabel;
+    @FXML private Label usernameLabel,nameLabel,dateLabel, receiver, inDate, prNo, inDueDate, inNo;
     @FXML private Button createRQBtn,listRQBtn,purchaseProductBtn,logoutBtn;
 
     //PRList
@@ -56,10 +59,12 @@ public class InventoryReceiveAndClaimController {
 
 
     private Account account;
+    private PrForm prSelect;
     private PrList prFormList;
     private RtFormList retFormList;
     private retService rt_service;
     private prService pr_service;
+    private inService in_service;
     public void initialize(){
         Platform.runLater(new Runnable() {
             @Override
@@ -134,6 +139,33 @@ public class InventoryReceiveAndClaimController {
         sortedRt.comparatorProperty().bind(claimsTable.comparatorProperty());
         claimsTable.setItems(sortedRt);
     }
+
+    @FXML public void tableRowOnMouseClickPr(MouseEvent mouseEvent)  {
+        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            if(mouseEvent.getClickCount() == 2 && !prFormTable.getSelectionModel().getSelectedCells().isEmpty()) {
+                PrForm clickedPr = prFormTable.getSelectionModel().getSelectedItem();
+                prSelect = clickedPr;
+                prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description,Qty_onhand,(Qty_onhand-Rq_qty) AS amount FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+clickedReq.getRqNumber() + "'");
+                receivePage.toFront();
+                int num = in_service.getAllInForm("SELECT count(IN_no)+1 AS inNum FROM in_forms");
+                inNo.setText(clickedPr.getRqNumber());
+                prNo.setText(clickedPr.getPrNumber());
+                receiver.setText(clickedPr.getEmpId()+" , "+clickedPr.getEmpName());
+                rqDate.setText(clickedReq.getRqDate());
+                rqDue.setText(clickedReq.getRqDueDate());
+                rqShipDate.setText(clickedReq.getDeliveriedDate());
+                ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
+                itemNum.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+                product.setCellValueFactory(new PropertyValueFactory<>("productName"));
+                description.setCellValueFactory(new PropertyValueFactory<>("description"));
+                qty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+                inventory.setCellValueFactory(new PropertyValueFactory<>("onHand"));
+                productLeft.setCellValueFactory(new PropertyValueFactory<>("itemNumForecast"));
+                reqTableDetail.setItems(productList);
+            }
+        }
+    }
+
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
         if(menu.getSource() == listRQBtn){
             listRQBtn = (Button) menu.getSource();
@@ -176,6 +208,7 @@ public class InventoryReceiveAndClaimController {
 
         }
     }
+
     @FXML public void handleLogOutBtn(ActionEvent event) throws IOException {
         logoutBtn = (Button) event.getSource();
         Stage stage = (Stage) logoutBtn.getScene().getWindow();
@@ -186,6 +219,7 @@ public class InventoryReceiveAndClaimController {
 
         stage.show();
     }
+
     public void setAccount(Account account){
         this.account = account;
     }
