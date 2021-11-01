@@ -55,6 +55,8 @@ public class InventoryStockOutController {
     @FXML private TableColumn<ProductDoc,Integer> productLeft;
     @FXML private ChoiceBox<String> typeChoice;
     @FXML private Pane reqList,purchaseProduct,reqDetails;
+    @FXML private MenuButton receiveProductBtn;
+    @FXML private MenuItem receiveMenuBtn,claimsMenuBtn;
     private reqService service;
     private NumberFormat rqNumFormat = new DecimalFormat("0000");
     private ReqList rqList;
@@ -154,6 +156,26 @@ public class InventoryStockOutController {
             InventoryPurchaseProductController controller = loader.getController();
             controller.setAccount(account);
 
+            stage.show();
+        }
+        else if(menu.getSource() == receiveMenuBtn){
+            receiveProductBtn.setText(receiveMenuBtn.getText());
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            stage.show();
+
+        }
+        else if(menu.getSource() == claimsMenuBtn){
+            receiveProductBtn.setText(claimsMenuBtn.getText());
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            controller.setPaneClaim();
             stage.show();
         }
     }

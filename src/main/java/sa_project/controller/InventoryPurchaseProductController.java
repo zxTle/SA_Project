@@ -36,6 +36,8 @@ public class InventoryPurchaseProductController {
     @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn;
     @FXML private Pane reqList,purchaseProduct,reqDetails;
     @FXML private MenuButton typeChoice;
+    @FXML private MenuButton receiveProductBtn;
+    @FXML private MenuItem receiveMenuBtn,claimsMenuBtn;
     private CategoryList caList;
     private productService productService;
     private reqService service;
@@ -103,6 +105,26 @@ public class InventoryPurchaseProductController {
         else if(menu.getSource() == purchaseProductBtn){
             purchaseProduct.toFront();
             purchaseProductBtn.setStyle(styleHover);
+        }
+        else if(menu.getSource() == receiveMenuBtn){
+            receiveProductBtn.setText(receiveMenuBtn.getText());
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            stage.show();
+
+        }
+        else if(menu.getSource() == claimsMenuBtn){
+            receiveProductBtn.setText(claimsMenuBtn.getText());
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            controller.setPaneClaim();
+            stage.show();
         }
     }
     @FXML public void handleLogOutBtn(ActionEvent event) throws IOException {

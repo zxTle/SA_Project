@@ -52,6 +52,8 @@ public class InventoryProductController {
     @FXML private MenuButton typeChoice;
     @FXML private ImageView icon;
     @FXML private Pane editProductPage, RqList, productList, createProductPage;
+    @FXML private MenuButton receiveProductBtn;
+    @FXML private MenuItem receiveMenuBtn,claimsMenuBtn;
     public Account account;
     private reqService reqService;
     private productService productService;
@@ -199,6 +201,26 @@ public class InventoryProductController {
             InventoryPurchaseProductController controller = loader.getController();
             controller.setAccount(account);
 
+            stage.show();
+        }
+        else if(menu.getSource() == receiveMenuBtn){
+            receiveProductBtn.setText(receiveMenuBtn.getText());
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            stage.show();
+
+        }
+        else if(menu.getSource() == claimsMenuBtn){
+            receiveProductBtn.setText(claimsMenuBtn.getText());
+            Stage stage = (Stage) receiveProductBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryReceiveAndClaim.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryReceiveAndClaimController controller = loader.getController();
+            controller.setAccount(account);
+            controller.setPaneClaim();
             stage.show();
         }
     }
