@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
+import sa_project.service.inService;
 import sa_project.service.prService;
 import sa_project.service.productService;
 import sa_project.service.retService;
@@ -35,11 +36,11 @@ public class InventoryReceiveAndClaimController {
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #61BDF6;";
     private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
-    @FXML private Pane purchaseList,claimList;
+    @FXML private Pane purchaseList,claimList,receiveList;
     @FXML private MenuButton receiveProductBtn;
     @FXML private MenuItem receiveMenuBtn,claimsMenuBtn;
     @FXML private Label usernameLabel,nameLabel,dateLabel;
-    @FXML private Button createRQBtn,listRQBtn,purchaseProductBtn,logoutBtn;
+    @FXML private Button createRQBtn,listRQBtn,purchaseProductBtn,logoutBtn,viewReceiveBtn,backRBtn;
 
     //PRList
     @FXML private TableView<PrForm> prFormTable;
@@ -67,11 +68,20 @@ public class InventoryReceiveAndClaimController {
     @FXML private TableColumn<ProductDoc,String> reasonC;
     @FXML private Button  cBackBtn,claimBtn;
 
+    //InList
+    @FXML TextField searchReceive;
+    @FXML private TableView<InForm> InTb;
+    @FXML private TableColumn<InForm,String> inNumT;
+    @FXML private TableColumn<InForm,String>prNumT;
+    @FXML private TableColumn<InForm,String> inDateT;
+    @FXML private TableColumn<InForm,String> empReceive;
 
     private Account account;
     private RtForm rtSelect;
     private ProductsDocList prList;
     private PrList prFormList;
+    private InList inFormList;
+    private inService in_service;
     private RtFormList retFormList;
     private retService rt_service;
     private prService pr_service;
@@ -80,8 +90,14 @@ public class InventoryReceiveAndClaimController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                in_service = new inService();
                 productService = new productService();
                 pr_service = new prService();
+                try {
+                    inFormList = in_service.getAllInForm("SELECT IN_no,PR_no,IN_date,Emp_id,Emp_name FROM in_forms NATURAL JOIN employees;");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 try {
                     prFormList = pr_service.getAllPrFrom("SELECT PR_no,Emp_id,PR_date,PR_status,IN_due_date,Emp_name FROM pr_forms NATURAL JOIN employees;");
                 } catch (SQLException throwables) {
@@ -151,6 +167,27 @@ public class InventoryReceiveAndClaimController {
         sortedRt.comparatorProperty().bind(claimsTable.comparatorProperty());
         claimsTable.setItems(sortedRt);
     }
+    private void showInList(){
+        ObservableList<InForm> inList = FXCollections.observableList(inFormList.toList());
+        inNumT.setCellValueFactory(new PropertyValueFactory<>("inNum"));
+        prNumT.setCellValueFactory(new PropertyValueFactory<>("prNum"));
+        inDateT.setCellValueFactory(new PropertyValueFactory<>("inDate"));
+        empReceive.setCellValueFactory(new PropertyValueFactory<>("empId"));
+        InTb.setItems(inList);
+        FilteredList<InForm> searchFilter = new FilteredList<>(inList, b -> true);
+        searchReceive.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchFilter.setPredicate(in -> {
+                if(newValue == null || newValue.isEmpty()) return true;
+                if(in.getInNum().indexOf(newValue) != -1 || in.getPrNum().indexOf(newValue) != -1
+                        || in.getEmpId().indexOf(newValue) != -1 || in.getEmpId().toLowerCase().indexOf(newValue) != -1
+                        || in.getInNum().toLowerCase().indexOf(newValue) != -1 || in.getPrNum().toLowerCase().indexOf(newValue) != -1) return true;
+                else return false;
+            });
+        });
+        SortedList<InForm> sortedIn = new SortedList<>(searchFilter);
+        sortedIn.comparatorProperty().bind(InTb.comparatorProperty());
+        InTb.setItems(sortedIn);
+    }
 
     @FXML public void tableRowOnMouseClick(MouseEvent mouseEvent) throws SQLException {
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
@@ -181,6 +218,11 @@ public class InventoryReceiveAndClaimController {
             claimList.toFront();
         }
         if(topBtn.getSource() == cBackBtn) claimList.toFront();
+        if(topBtn.getSource() == viewReceiveBtn){
+            showInList();
+            receiveList.toFront();
+        }
+        if(topBtn.getSource() == backRBtn) purchaseList.toFront();
     }
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
         if(menu.getSource() == listRQBtn){
