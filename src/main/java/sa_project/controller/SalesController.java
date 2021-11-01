@@ -215,13 +215,13 @@ public class SalesController {
             descrip.setCellValueFactory(new PropertyValueFactory<>("description"));
             qtyRq.setCellValueFactory(new PropertyValueFactory<>("quantity"));
             saleTable.setItems(createListDoc);
-            if(productSelect.getText().equals("สินค้า") && rqQtyF.getText().equals("")){
+            if(productSelect.getText().equals("สินค้า") && (rqQtyF.getText().equals("") || Integer.parseInt(rqQtyF.getText()) == 0)){
                 alert2("");
             }
-            else if (productSelect.getText().equals("สินค้า") && !(rqQtyF.getText().equals(""))){
+            else if (productSelect.getText().equals("สินค้า") && (!(rqQtyF.getText().equals(""))  || Integer.parseInt(rqQtyF.getText()) != 0)){
                 alert2("สินค้า");
             }
-            else if(!(productSelect.getText().equals("สินค้า")) && rqQtyF.getText().equals("")){
+            else if(!(productSelect.getText().equals("สินค้า")) && (rqQtyF.getText().equals("")  || Integer.parseInt(rqQtyF.getText()) == 0)){
                 alert2("จำนวน");
             }
             else{
@@ -229,7 +229,7 @@ public class SalesController {
                 String name = productSelect.getText().split(":")[1];
                 Integer qty = Integer.valueOf(rqQtyF.getText());
                 String des = productsList.getDescription(id);
-                ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty,"");
+                ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty,"",0,0);
                 createList.addProduct(product);
                 saleTable.getItems().add(product);
                 rqQtyF.clear();
