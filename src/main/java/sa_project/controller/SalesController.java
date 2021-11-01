@@ -229,7 +229,7 @@ public class SalesController {
                 String name = productSelect.getText().split(":")[1];
                 Integer qty = Integer.valueOf(rqQtyF.getText());
                 String des = productsList.getDescription(id);
-                ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty,"",0,0);
+                ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty,"",0,0,"");
                 createList.addProduct(product);
                 saleTable.getItems().add(product);
                 rqQtyF.clear();

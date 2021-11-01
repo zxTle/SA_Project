@@ -54,7 +54,7 @@ public class prService {
             int qty = queryResult.getInt("RQ_qty");
             int inventory = queryResult.getInt("Qty_onhand");
             int itemForecast = queryResult.getInt("amount");
-            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",inventory,itemForecast);
+            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",inventory,itemForecast,"");
             products.addProduct(product);
         }
     }

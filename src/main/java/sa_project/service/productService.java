@@ -60,4 +60,16 @@ public class productService {
         readCategory(query);
         return categoryList;
     }
+
+    public void updateQtyStockFormClaims(ProductsDocList retProduct) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        for(int i = 0;i<retProduct.toList().size();i++){
+            int qty = retProduct.toList().get(i).getQuantity();
+            String productId = "'"+retProduct.toList().get(i).getProductId()+"';";
+            String query = "UPDATE product_stocks SET Qty_onhand = Qty_onhand+"+qty+" WHERE Product_id = "+productId;
+            Statement statement = connectDBSales.createStatement();
+            statement.executeUpdate(query);
+        }
+    }
 }

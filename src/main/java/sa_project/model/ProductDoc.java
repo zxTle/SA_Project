@@ -9,8 +9,9 @@ public class ProductDoc {
     private String productType;
     private int onHand;
     private int itemNumForecast;
+    private String claimsReason;
 
-    public ProductDoc(int itemNum, String productId, String productName, String description, int quantity, String productType, int onHand, int itemNumForecast) {
+    public ProductDoc(int itemNum, String productId, String productName, String description, int quantity, String productType, int onHand, int itemNumForecast, String claimsReason) {
         this.itemNum = itemNum;
         this.productId = productId;
         this.productName = productName;
@@ -19,6 +20,15 @@ public class ProductDoc {
         this.productType = productType;
         this.onHand = onHand;
         this.itemNumForecast = itemNumForecast;
+        this.claimsReason = claimsReason;
+    }
+
+    public String getClaimsReason() {
+        return claimsReason;
+    }
+
+    public void setClaimsReason(String claimsReason) {
+        this.claimsReason = claimsReason;
     }
 
     public void setOnHand(int onHand) {

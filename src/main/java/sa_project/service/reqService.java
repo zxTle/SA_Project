@@ -59,7 +59,7 @@ public class reqService {
             int qty = queryResult.getInt("RQ_qty");
             int inventory = queryResult.getInt("Qty_onhand");
             int itemForecast = queryResult.getInt("amount");
-            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",inventory,itemForecast);
+            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",inventory,itemForecast,"");
             products.addProduct(product);
         }
     }
@@ -87,7 +87,7 @@ public class reqService {
             String prType = queryResult.getString("Product_type");
             int inventory = queryResult.getInt("Qty_onhand");
             int itemForecast = queryResult.getInt("amount");
-            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty,prType,inventory,itemForecast);
+            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty,prType,inventory,itemForecast,"");
             products.addProduct(product);
         }
     }

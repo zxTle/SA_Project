@@ -14,11 +14,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
 import sa_project.service.prService;
+import sa_project.service.productService;
 import sa_project.service.retService;
 
 import java.io.IOException;
@@ -53,17 +56,31 @@ public class InventoryReceiveAndClaimController {
     @FXML private TableColumn<RtForm,String> inNumCol;
     @FXML private TableColumn<RtForm,String>rtStatus;
     @FXML private TextField searchClaim;
+    @FXML private Pane claimDetails;
+    @FXML private Label claimNum,inNumc;
+    //RetProductList
+    @FXML private TableView<ProductDoc> claimListTb;
+    @FXML private TableColumn<ProductDoc,Integer> itemNumc;
+    @FXML private TableColumn<ProductDoc,String> productc;
+    @FXML private TableColumn<ProductDoc,String> desC;
+    @FXML private TableColumn<ProductDoc,Integer> qtyC;
+    @FXML private TableColumn<ProductDoc,String> reasonC;
+    @FXML private Button  cBackBtn,claimBtn;
 
 
     private Account account;
+    private RtForm rtSelect;
+    private ProductsDocList prList;
     private PrList prFormList;
     private RtFormList retFormList;
     private retService rt_service;
     private prService pr_service;
+    private productService productService;
     public void initialize(){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                productService = new productService();
                 pr_service = new prService();
                 try {
                     prFormList = pr_service.getAllPrFrom("SELECT PR_no,Emp_id,PR_date,PR_status,IN_due_date,Emp_name FROM pr_forms NATURAL JOIN employees;");
@@ -134,6 +151,37 @@ public class InventoryReceiveAndClaimController {
         sortedRt.comparatorProperty().bind(claimsTable.comparatorProperty());
         claimsTable.setItems(sortedRt);
     }
+
+    @FXML public void tableRowOnMouseClick(MouseEvent mouseEvent) throws SQLException {
+        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            if(mouseEvent.getClickCount() == 2 && !claimsTable.getSelectionModel().getSelectedCells().isEmpty()) {
+                RtForm clickedRet = claimsTable.getSelectionModel().getSelectedItem();
+                rtSelect = clickedRet;
+                prList = rt_service.getProductList("SELECT RT_item_num,RT_no,Product_id,RT_qty,RT_reason,Product_name,Description FROM ret_product_list NATURAL JOIN product_stocks WHERE RT_no ="+ "'"+ clickedRet.getRtNum()+"'");
+                claimDetails.toFront();
+                if(rtSelect.getRtStatus().equals("Received")) {claimBtn.setDisable(true);}
+                else {claimBtn.setDisable(false);}
+                claimNum.setText("เลขที่ใบเคลม : "+clickedRet.getRtNum());
+                inNumc.setText("เลขที่ใบรับของ : "+clickedRet.getInNum());
+                ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
+                itemNumc.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+                productc.setCellValueFactory(new PropertyValueFactory<>("productName"));
+                desC.setCellValueFactory(new PropertyValueFactory<>("description"));
+                qtyC.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+                reasonC.setCellValueFactory(new PropertyValueFactory<>("claimsReason"));
+                claimListTb.setItems(productList);
+            }
+        }
+    }
+    @FXML private  void handleTop(ActionEvent topBtn) throws SQLException {
+        if(topBtn.getSource() == claimBtn){
+            rt_service.updateRetStatus(rtSelect);
+            productService.updateQtyStockFormClaims(prList);
+            initialize();
+            claimList.toFront();
+        }
+        if(topBtn.getSource() == cBackBtn) claimList.toFront();
+    }
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
         if(menu.getSource() == listRQBtn){
             listRQBtn = (Button) menu.getSource();
@@ -173,7 +221,6 @@ public class InventoryReceiveAndClaimController {
         else if(menu.getSource() == claimsMenuBtn){
             receiveProductBtn.setText(claimsMenuBtn.getText());
             claimList.toFront();
-
         }
     }
     @FXML public void handleLogOutBtn(ActionEvent event) throws IOException {
