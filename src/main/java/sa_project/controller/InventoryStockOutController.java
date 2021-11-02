@@ -40,7 +40,7 @@ public class InventoryStockOutController {
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
     @FXML private Label dateLabel,usernameLabel,nameLabel,rqNum,orNum,empName,rqDate,rqDue,rqShipDate;
     @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn,orderProduct,deliveryBtn;
-    @FXML private TextField inputSearch;
+    @FXML private TextField inputSearch,reqStatus;
     @FXML private TableView<ReqForm> reqTable;
     @FXML private TableColumn<ReqForm,String> reqNo;
     @FXML private TableColumn<ReqForm,String> reqEmp;
@@ -122,6 +122,18 @@ public class InventoryStockOutController {
                 rqDate.setText(clickedReq.getRqDate());
                 rqDue.setText(clickedReq.getRqDueDate());
                 rqShipDate.setText(clickedReq.getDeliveriedDate());
+                if(rqselect.getRqStatus().equals("Waiting")){
+                    reqStatus.setText("Waiting");
+                    reqStatus.setDisable(true);
+                }
+                else if(rqselect.getRqStatus().equals("Deliveried")){
+                    reqStatus.setText("Deliveried");
+                    reqStatus.setDisable(true);
+                }
+                else if(rqselect.getRqStatus().equals("Cancelled")){
+                    reqStatus.setText("Cancelled");
+                    reqStatus.setDisable(true);
+                }
                 ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
                 itemNum.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
                 product.setCellValueFactory(new PropertyValueFactory<>("productName"));

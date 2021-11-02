@@ -123,13 +123,13 @@ public class InventoryPurchaseProductController {
             prProductSpec.setCellValueFactory(new PropertyValueFactory<>("description"));
             numOrder.setCellValueFactory(new PropertyValueFactory<>("quantity"));
             prTable.setItems(createPrList);
-            if(typeChoice.getText().equals("สินค้า") && (orderNum.getText().equals("") || Integer.parseInt(orderNum.getText()) == 0)){
+            if(typeChoice.getText().equals("สินค้า") && (orderNum.getText().equals("") || Integer.parseInt(orderNum.getText()) <= 0)){
                 alert2("");
             }
-            else if (typeChoice.getText().equals("สินค้า") && (!(orderNum.getText().equals(""))  || Integer.parseInt(orderNum.getText()) != 0)){
+            else if (typeChoice.getText().equals("สินค้า") && (!(orderNum.getText().equals(""))  || Integer.parseInt(orderNum.getText()) <= 0)){
                 alert2("สินค้า");
             }
-            else if(!(typeChoice.getText().equals("สินค้า")) && (orderNum.getText().equals("")  || Integer.parseInt(orderNum.getText()) == 0)){
+            else if(!(typeChoice.getText().equals("สินค้า")) && (orderNum.getText().equals("")  || Integer.parseInt(orderNum.getText()) <= 0)){
                 alert2("จำนวน");
             }
             else{
@@ -205,10 +205,10 @@ public class InventoryPurchaseProductController {
             alert.setContentText("กรุณาเลือกสินค้าที่จะสั่งซื้อ");
         }
         else if(message == "จำนวน"){
-            alert.setContentText("กรุณากรอกจำนวนสินค้า");
+            alert.setContentText("กรุณากรอกจำนวนสินค้า โดยจำนวนสินค้าจะต้องมีค่ามากกว่า 0");
         }
         else {
-            alert.setContentText("กรุณาเลือกสินค้าที่จะสั่งซื้อ\n"+"กรุณากรอกจำนวนสินค้า");
+            alert.setContentText("กรุณาเลือกสินค้าที่จะสั่งซื้อ\n"+"กรุณากรอกจำนวนสินค้า โดยจำนวนสินค้าจะต้องมีค่ามากกว่า 0");
         }
         alert.showAndWait();
     }
