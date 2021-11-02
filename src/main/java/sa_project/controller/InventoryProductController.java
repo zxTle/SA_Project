@@ -181,13 +181,13 @@ public class InventoryProductController {
         if(pNameField.getText().isEmpty() && !desField.getText().isEmpty()){
             alert("ชื่อสินค้า");
         }
-        else if(desField.getText().isEmpty() && !pNameField.getText().isEmpty()){
+        else if(desField.getText().isEmpty() && !pNameField.getText().isEmpty() && !typeChoice.getText().equals("ประเภท")){
             alert("คุณสมบัติ");
         }
-        else if(desField.getText().isEmpty() && pNameField.getText().isEmpty()){
+        else if(desField.getText().isEmpty() && pNameField.getText().isEmpty() && !typeChoice.getText().equals("ประเภท")){
             alert("คุณสมบัติ-ชื่อสินค้า");
         }
-        else if(desField.getText().isEmpty() && pNameField.getText().isEmpty() && typeChoice.getText().isEmpty()){
+        else if(desField.getText().isEmpty() && pNameField.getText().isEmpty() && typeChoice.getText().equals("ประเภท")){
             alert("คุณสมบัติ-ชื่อสินค้า-ประเภท");
         }
         else{

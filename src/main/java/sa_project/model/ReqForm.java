@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class ReqForm {
     private String rqNumber;
-    private String  rqDate;
+    private String rqDate;
     private String rqDueDate;
     private String deliveriedDate;
     private String rqStatus;

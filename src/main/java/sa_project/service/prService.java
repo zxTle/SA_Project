@@ -1,10 +1,7 @@
 package sa_project.service;
 
 import sa_project.DatabaseConnection;
-import sa_project.model.PrForm;
-import sa_project.model.PrList;
-import sa_project.model.ProductDoc;
-import sa_project.model.ProductsDocList;
+import sa_project.model.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -57,6 +54,26 @@ public class prService {
             ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",inventory,itemForecast);
             products.addProduct(product);
         }
+    }
+    public void addPrForm(PrForm prForm) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        String prNo ="'" + prForm.getPrNumber()+"'" ;
+        String prDate = "'" +prForm.getPrDate()+"'" ;
+        String prDue = "'" +prForm.getPrDueDate()+"'" ;
+        String status = "'" +prForm.getPrStatus()+"'" ;
+        String emp = "'" +prForm.getEmpId()+"'" ;
+        String toInsert ="("+prNo+","+prDate+","+prDue+","+status+","+emp+")";
+        String query = "INSERT INTO pr_forms (PR_no, PR_date, IN_due_date,PR_status,Emp_id) VALUES " +toInsert;
+        statement.executeUpdate(query);
+    }
+    public void addPrList(String prNo,ProductsDocList products) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        String query = "INSERT INTO pr_product_list (PR_item_num, PR_no, Product_id, PR_qty) VALUES "+ products.toInsert(prNo);
+        statement.executeUpdate(query);
     }
     public ProductsDocList getProductList(String query){
         try {

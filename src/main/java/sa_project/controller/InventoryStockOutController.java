@@ -37,7 +37,7 @@ public class InventoryStockOutController {
     private String styleNormal = "-fx-font-family: 'Kanit';\n" + "-fx-font-size: 20px;\n" + "-fx-background-color: #61BDF6;\n" +
             "-fx-background-radius : 0;\n" + "-fx-text-fill : #081F37;";
     @FXML private Label dateLabel,usernameLabel,nameLabel,rqNum,orNum,empName,rqDate,rqDue,rqShipDate;
-    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn,verifyBtn;
+    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn,orderProduct,deliveryBtn;
     @FXML private TextField inputSearch;
     @FXML private TableView<ReqForm> reqTable;
     @FXML private TableColumn<ReqForm,String> reqNo;
@@ -112,6 +112,8 @@ public class InventoryStockOutController {
                 rqselect = clickedReq;
                 prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description,Qty_onhand,(Qty_onhand-Rq_qty) AS amount FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+clickedReq.getRqNumber() + "'");
                 reqDetails.toFront();
+//                if(rqselect.getRqStatus().equals("Waiting")||rqselect.getRqStatus().equals("Deliveried")) {deliveryBtn.setDisable(true);}
+//                else {deliveryBtn.setDisable(false);}
                 rqNum.setText(clickedReq.getRqNumber());
                 orNum.setText(clickedReq.getOrderNum());
                 empName.setText(clickedReq.getEmpId()+" , "+clickedReq.getEmpName());
@@ -127,6 +129,36 @@ public class InventoryStockOutController {
                 productLeft.setCellValueFactory(new PropertyValueFactory<>("itemNumForecast"));
                 reqTableDetail.setItems(productList);
             }
+        }
+    }
+    @FXML private void handleOrderProduct(ActionEvent event) throws IOException {
+        orderProduct = (Button) event.getSource();
+        Stage stage = (Stage) orderProduct.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/InventoryPurchaseProduct.fxml"));
+        stage.setScene(new Scene(loader.load(),1280,768));
+        InventoryPurchaseProductController controller = loader.getController();
+        controller.setAccount(account);
+
+        stage.show();
+    }
+    @FXML private void handleDeliveryBtn(ActionEvent event){
+        if(!prList.checkIfEnough() && rqselect.getRqStatus().equals("Waiting")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ไม่สามารถส่งสินค้าได้!");
+            alert.setHeaderText("สินค้าไม่เพียงพอ กรุณาสั่งสินค้าเพิ่มเติมเพื่อส่งสินค้า");
+            alert.showAndWait();
+        }
+        else if(prList.checkIfEnough() && rqselect.getRqStatus().equals("Deliveried")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ไม่สามารถส่งสินค้าได้!");
+            alert.setHeaderText("สินค้าดังกล่าวได้ถูกส่งมอบเเล้ว");
+            alert.showAndWait();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("สิ่งมอบสินค้าสำเร็จ!");
+            alert.setHeaderText("สิ่งมอบสินค้าของใบเบิกสินค้าหมายเลข " + rqselect.getRqNumber() + " สำเร็จ");
+            alert.showAndWait();
         }
     }
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {

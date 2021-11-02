@@ -27,7 +27,7 @@ public class HomeController {
 
     public void Login(ActionEvent event){
         if(usernameField.getText().isEmpty() && passwordField.getText().isEmpty()){
-            status.setText("Please enter username and password");
+            status.setText("กรุณากรอก Username เเละ Password");
         }
         else{
             DatabaseConnection login = new DatabaseConnection();
@@ -62,6 +62,9 @@ public class HomeController {
                         controller.setAccount(account);
 
                         stage.show();
+                    }
+                    if(!queryResult.isBeforeFirst()){
+                        status.setText("Username หรือ Password ไม่ถูกต้อง");
                     }
                 }
             }catch (Exception e){

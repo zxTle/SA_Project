@@ -24,11 +24,9 @@
             <TableView fx:id="prTable" layoutY="342.0" prefHeight="426.0" prefWidth="963.0" styleClass="table" stylesheets="@css/table.css">
                <columns>
                   <TableColumn fx:id="prOrder" prefWidth="68.0" text="ลำดับ" />
-                  <TableColumn fx:id="prProduct" prefWidth="277.0" text="สินค้า" />
-                  <TableColumn fx:id="prProductDetail" minWidth="0.0" prefWidth="276.0" text="รายละเอียด" />
-                  <TableColumn fx:id="rqProductNum" prefWidth="114.0" text="จำนวน&#10;ขอเบิก" />
-                  <TableColumn fx:id="inventory" prefWidth="114.0" text="คงคลัง" />
-                  <TableColumn fx:id="availableForecast" prefWidth="114.0" text="คงเหลือ" />
+                  <TableColumn fx:id="prProduct" prefWidth="302.39996337890625" text="สินค้า" />
+                  <TableColumn fx:id="prProductSpec" minWidth="0.0" prefWidth="453.60009765625" text="คุณสมบัติ" />
+                  <TableColumn fx:id="numOrder" prefWidth="137.4000244140625" text="จำนวนสั่งซื้อ" />
                </columns>
             </TableView>
             <Pane layoutX="52.0" layoutY="34.0" prefHeight="70.0" prefWidth="614.0" style="-fx-background-color: #61BDF6; -fx-background-radius: 50px;">
@@ -75,7 +73,7 @@
                   </Label>
                </children>
             </Pane>
-            <Button alignment="CENTER" layoutX="681.0" layoutY="45.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="106.0" styleClass="btn-top" stylesheets="@css/button.css" text="สร้าง" textFill="#081f37">
+            <Button fx:id="createPrBtn" alignment="CENTER" layoutX="681.0" layoutY="45.0" mnemonicParsing="false" onAction="#handleCreatePrBtn" prefHeight="49.0" prefWidth="106.0" styleClass="btn-top" stylesheets="@css/button.css" text="สร้าง" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
@@ -83,7 +81,7 @@
                   <Insets />
                </opaqueInsets>
             </Button>
-            <Button fx:id="discardBtn" alignment="CENTER" layoutX="806.0" layoutY="45.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="106.0" styleClass="btn-top" stylesheets="@css/button.css" text="ละทิ้ง" textFill="#081f37">
+            <Button fx:id="discardBtn" alignment="CENTER" layoutX="806.0" layoutY="45.0" mnemonicParsing="false" onAction="#handleCreatePrPage" prefHeight="49.0" prefWidth="106.0" styleClass="btn-top" stylesheets="@css/button.css" text="ละทิ้ง" textFill="#081f37">
                <font>
                   <Font size="1.0" />
                </font>
@@ -99,7 +97,7 @@
                </graphic>
             </Button>
             <DatePicker fx:id="prDue" layoutX="702.0" layoutY="134.0" prefHeight="38.0" prefWidth="210.0" />
-            <Button fx:id="AddBtn" layoutX="506.0" layoutY="271.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="59.0" styleClass="btn-top" stylesheets="@css/button.css">
+            <Button fx:id="AddBtn" layoutX="506.0" layoutY="271.0" mnemonicParsing="false" onAction="#handleCreatePrPage" prefHeight="45.0" prefWidth="59.0" styleClass="btn-top" stylesheets="@css/button.css">
                <font>
                   <Font size="20.0" />
                </font>
@@ -111,7 +109,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <MenuButton fx:id="typeChoice" layoutX="60.0" layoutY="269.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="318.0" styleClass="select_product" stylesheets="@css/dropdown.css" text="ชื่อสินค้า" />
+            <MenuButton fx:id="typeChoice" layoutX="60.0" layoutY="269.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="318.0" styleClass="select_product" stylesheets="@css/dropdown.css" text="สินค้า" />
             <TextField fx:id="orderNum" layoutX="399.0" layoutY="269.0" prefHeight="49.0" prefWidth="89.0" promptText="จำนวน" style="-fx-border-color: #61BDF6; -fx-border-width: 3px; -fx-border-radius: 50px; -fx-background-radius: 50px;" styleClass="field" stylesheets="@css/style.css">
                <font>
                   <Font size="20.0" />

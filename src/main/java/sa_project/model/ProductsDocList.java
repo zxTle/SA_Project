@@ -26,4 +26,12 @@ public class ProductsDocList {
         }
         return text;
     }
+    public boolean checkIfEnough(){
+        for (ProductDoc productDoc : productList){
+            if(productDoc.getItemNumForecast() < 0){
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -44,17 +44,15 @@ public class InventoryPurchaseProductController {
             ,rqNum,orNum,empName,rqDate,rqDue,rqShipDate
             ,prNum,prDate;
     @FXML private DatePicker prDue;
-    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn,discardBtn,AddBtn;
+    @FXML private Button rqListBtn, listRQBtn, logoutBtn, purchaseProductBtn,discardBtn,AddBtn,createPrBtn;
     @FXML private Pane reqList,purchaseProduct,reqDetails;
     @FXML private MenuButton typeChoice;
     @FXML private TextField orderNum;
-    @FXML private TableView<PrForm> prTable;
-    @FXML private TableColumn<PrForm,Integer> prOrder;
-    @FXML private TableColumn<PrForm,String> prProduct;
-    @FXML private TableColumn<PrForm,String> prProductDetail;
-    @FXML private TableColumn<PrForm,Integer> rqProductNum;
-    @FXML private TableColumn<PrForm,Integer> inventory;
-    @FXML private TableColumn<PrForm,Integer> availableForecast;
+    @FXML private TableView<ProductDoc> prTable;
+    @FXML private TableColumn<ProductDoc,Integer> prOrder;
+    @FXML private TableColumn<ProductDoc,String> prProduct;
+    @FXML private TableColumn<ProductDoc,String> prProductSpec;
+    @FXML private TableColumn<ProductDoc,Integer> numOrder;
     private CategoryList caList;
     private productService productService;
     private prService prService;
@@ -66,6 +64,7 @@ public class InventoryPurchaseProductController {
     private PrList prList;
     private PrForm prForm;
     private Account account;
+    private ProductsDocList createList = new ProductsDocList();
 
 
 
@@ -109,78 +108,146 @@ public class InventoryPurchaseProductController {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
-//    @FXML private void handleCreatePrPage(ActionEvent e) throws SQLException {
-//        if(e.getSource() == discardBtn){
-//            prDue.getEditor().clear();
-//            typeChoice.setText("ชื่อสินค้า");
-//            orderNum.clear();
-//        }
-//        if(e.getSource() == AddBtn){
-//            ObservableList<PrForm> createPrList = FXCollections.observableArrayList(prList.toList());
-//            prOrder.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
-//            prProduct.setCellValueFactory(new PropertyValueFactory<>("productName"));
-//            prProductDetail.setCellValueFactory(new PropertyValueFactory<>("description"));
-//            rqProductNum.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-//            inventory.setCellValueFactory(new PropertyValueFactory<>(""));
-//            availableForecast.setCellValueFactory(new PropertyValueFactory<>(""));
-//            prTable.setItems(createPrList);
-//            if(productSelect.getText().equals("สินค้า") && (rqQtyF.getText().equals("") || Integer.parseInt(rqQtyF.getText()) == 0)){
-//                alert2("");
-//            }
-//            else if (productSelect.getText().equals("สินค้า") && (!(rqQtyF.getText().equals(""))  || Integer.parseInt(rqQtyF.getText()) != 0)){
-//                alert2("สินค้า");
-//            }
-//            else if(!(productSelect.getText().equals("สินค้า")) && (rqQtyF.getText().equals("")  || Integer.parseInt(rqQtyF.getText()) == 0)){
-//                alert2("จำนวน");
-//            }
-//            else{
-//                String id = productSelect.getText().split(":")[0];
-//                String name = productSelect.getText().split(":")[1];
-//                Integer qty = Integer.valueOf(rqQtyF.getText());
-//                String des = productsList.getDescription(id);
-//                ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty,"",0,0);
-//                createList.addProduct(product);
-//                saleTable.getItems().add(product);
-//                rqQtyF.clear();
-//                productSelect.setText("สินค้า");
-//            }
-//        }
-//        if(e.getSource() == CreateReq){
-//            if(OrderNumInput.getText().equals("") && datePick.getEditor().getText().equals("") && createList.toList().size()==0){
+    @FXML private void handleCreatePrPage(ActionEvent e) throws SQLException, IOException {
+        if(e.getSource() == discardBtn){
+            prDue.getEditor().clear();
+            typeChoice.setText("ชื่อสินค้า");
+            orderNum.clear();
+        }
+        if(e.getSource() == AddBtn){
+            ObservableList<ProductDoc> createPrList = FXCollections.observableArrayList(createList.toList());
+            prOrder.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+            prProduct.setCellValueFactory(new PropertyValueFactory<>("productName"));
+            prProductSpec.setCellValueFactory(new PropertyValueFactory<>("description"));
+            numOrder.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            prTable.setItems(createPrList);
+            if(typeChoice.getText().equals("สินค้า") && (orderNum.getText().equals("") || Integer.parseInt(orderNum.getText()) == 0)){
+                alert2("");
+            }
+            else if (typeChoice.getText().equals("สินค้า") && (!(orderNum.getText().equals(""))  || Integer.parseInt(orderNum.getText()) != 0)){
+                alert2("สินค้า");
+            }
+            else if(!(typeChoice.getText().equals("สินค้า")) && (orderNum.getText().equals("")  || Integer.parseInt(orderNum.getText()) == 0)){
+                alert2("จำนวน");
+            }
+            else{
+                String id = typeChoice.getText().split(":")[0];
+                String name = typeChoice.getText().split(":")[1];
+                Integer qty = Integer.valueOf(orderNum.getText());
+                String des = productsList.getDescription(id);
+                ProductDoc product = new ProductDoc(createList.toList().size()+1,id,name,des,qty,"",0,0);
+                createList.addProduct(product);
+                prTable.getItems().add(product);
+                orderNum.clear();
+                typeChoice.setText("สินค้า");
+            }
+        }
+//        if(e.getSource() == createPr){
+//            if(prDue.getEditor().getText().equals("") && createList.toList().size()==0){
 //                alert1("");
 //            }
-//            else if(OrderNumInput.getText().equals("") && !(datePick.getEditor().getText().equals("")) && createList.toList().size()!=0){
-//                alert1("ออเดอร์");
-//            }
-//            else if(!(OrderNumInput.getText().equals("")) && datePick.getEditor().getText().equals("") && createList.toList().size()!=0){
+//            else if(prDue.getEditor().getText().equals("") && createList.toList().size()!=0){
 //                alert1("วันที่");
 //            }
-//            else if(!(OrderNumInput.getText().equals("")) && !(datePick.getEditor().getText().equals("")) && createList.toList().size()==0){
+//            else if(!(prDue.getEditor().getText().equals("")) && createList.toList().size()==0){
 //                alert1("สินค้า");
 //            }
-//            else if(OrderNumInput.getText().equals("") && datePick.getEditor().getText().equals("") && createList.toList().size()!=0){
-//                alert1("ออเดอร์-วันที่");
-//            }
-//            else if(!(OrderNumInput.getText().equals("")) && datePick.getEditor().getText().equals("") && createList.toList().size()==0){
+//            else if(prDue.getEditor().getText().equals("") && createList.toList().size()==0){
 //                alert1("สินค้า-วันที่");
 //            }
-//            else if(OrderNumInput.getText().equals("") && !(datePick.getEditor().getText().equals("")) && createList.toList().size()==0){
-//                alert1("สินค้า-ออเดอร์");
-//            }
 //            else {
-//                String rqNo = "RQ"+rqNumFormat.format(rqList.toList().size()+1);
+//                String prNo = "PR"+prNumFormat.format(prList.toList().size()+1);
 //                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
-//                String rqDate = LocalDateTime.now().format(formatter);
-//                String dueDate = datePick.getValue().toString();
-//                ReqForm createReq = new ReqForm(rqNo,rqDate,dueDate,"","Waiting",OrderNumInput.getText(),account.getUsername(), account.getName());
-//                service.addRqForm(createReq);
-//                service.addRqList(rqNo,createList);
-//                ReqList.toFront();
-//                showSuccess(rqNo);
-//                initialize();
+//                String prDate = LocalDateTime.now().format(formatter);
+//                String dueDate = prDue.getValue().toString();
+//                PrForm createPr = new PrForm(prNo,prDate,"Waiting",dueDate,account.getUsername(), account.getName());
+//                prService.addPrForm(createPr);
+//                prService.addPrList(prNo,createList);
+//                showSuccess(prNo);
+//
+//                Stage stage = (Stage) createPr.getScene().getWindow();
+//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/StockOut.fxml"));
+//                stage.setScene(new Scene(loader.load(),1280,768));
+//                InventoryStockOutController controller = loader.getController();
+//                controller.setAccount(account);
+//
+//                stage.show();
 //            }
 //        }
-//    }
+    }
+    @FXML private void handleCreatePrBtn(ActionEvent event) throws SQLException, IOException {
+        if(prDue.getEditor().getText().equals("") && createList.toList().size()==0){
+            alert1("");
+        }
+        else if(prDue.getEditor().getText().equals("") && createList.toList().size()!=0){
+            alert1("วันที่");
+        }
+        else if(!(prDue.getEditor().getText().equals("")) && createList.toList().size()==0){
+            alert1("สินค้า");
+        }
+        else if(prDue.getEditor().getText().equals("") && createList.toList().size()==0){
+            alert1("สินค้า-วันที่");
+        }
+        else {
+            String prNo = "PR"+prNumFormat.format(prList.toList().size()+1);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
+            String prDate = LocalDateTime.now().format(formatter);
+            String dueDate = prDue.getValue().toString();
+            PrForm createPr = new PrForm(prNo,prDate,"Waiting",dueDate,account.getUsername(), account.getName());
+            prService.addPrForm(createPr);
+            prService.addPrList(prNo,createList);
+            showSuccess(prNo);
+
+            createPrBtn = (Button) event.getSource();
+            Stage stage = (Stage) createPrBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/StockOut.fxml"));
+            stage.setScene(new Scene(loader.load(),1280,768));
+            InventoryStockOutController controller = loader.getController();
+            controller.setAccount(account);
+
+            stage.show();
+        }
+    }
+    private void alert1(String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ไม่สามารถสร้างใบขอสั่งซื้อได้!");
+        alert.setHeaderText("กรุณาตรวจกรอกข้อมูลให้ครบถ้วน");
+        if (message == "สินค้า"){
+            alert.setContentText("กรุณาเลือกสินค้าที่ต้องการเบิก");
+        }
+        else if(message == "วันที่"){
+            alert.setContentText("กรุณาเลือกวันนำส่ง");
+        }
+        else if(message == "สินค้า-วันที่"){
+            alert.setContentText("กรุณาเลือกวันนำส่ง \n กรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
+        }
+        else {
+            alert.setContentText("กรุณากรอกเลขออเดอร์\n กรุณาเลือกวันนำส่ง \n กรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
+        }
+        alert.showAndWait();
+    }
+
+    private void alert2(String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("ไม่สามารถเพิ่มสินค้าได้!");
+        alert.setHeaderText("กรุณาตรวจกรอกข้อมูลให้ครบถ้วน");
+        if (message == "สินค้า"){
+            alert.setContentText("กรุณาเลือกสินค้าที่จะขอเบิก");
+        }
+        else if(message == "จำนวน"){
+            alert.setContentText("กรุณากรอกจำนวนที่จะขอเบิก");
+        }
+        else {
+            alert.setContentText("กรุณาเลือกสินค้าที่จะขอเบิก\n"+"กรุณากรอกจำนวนที่จะขอเบิก");
+        }
+        alert.showAndWait();
+    }
+    private void showSuccess(String prNum){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("สร้างใบขอสั่งซื้อสินค้าเรียบร้อย!");
+        alert.setHeaderText("สร้างใบขอสั่งซื้อสินค้าเลขที่ "+prNum+ " สำเร็จ");
+        alert.showAndWait();
+    }
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
         if(menu.getSource() == listRQBtn){
             listRQBtn = (Button) menu.getSource();
