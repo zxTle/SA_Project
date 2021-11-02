@@ -24,6 +24,7 @@ public class HomeController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     public Account account;
+    public Account checkLogin = new Account("","");
 
     public void Login(ActionEvent event){
         if(usernameField.getText().isEmpty() && passwordField.getText().isEmpty()){
@@ -41,7 +42,7 @@ public class HomeController {
                 while(queryResult.next()){
                     if(queryResult.getString(2).equals("Sale")){
                         account = new Account(usernameField.getText(),queryResult.getString(1));
-                        System.out.println(account.toString());
+                        checkLogin = account;
                         loginBtn = (Button) event.getSource();
                         Stage stage = (Stage) loginBtn.getScene().getWindow();
                         FXMLLoader loader = new FXMLLoader((getClass().getResource("/Sales1.fxml")));
@@ -53,7 +54,7 @@ public class HomeController {
                     }
                     if(queryResult.getString(2).equals("Inventory")){
                         account = new Account(usernameField.getText(),queryResult.getString(1));
-                        System.out.println(account.toString());
+                        checkLogin = account;
                         loginBtn = (Button) event.getSource();
                         Stage stage = (Stage) loginBtn.getScene().getWindow();
                         FXMLLoader loader = new FXMLLoader((getClass().getResource("/InventoryProducts.fxml")));
@@ -63,9 +64,9 @@ public class HomeController {
 
                         stage.show();
                     }
-                    if(!queryResult.isBeforeFirst()){
-                        status.setText("Username หรือ Password ไม่ถูกต้อง");
-                    }
+                }
+                if(checkLogin.getUsername().equals("")){
+                    status.setText("Username หรือ Password ไม่ถูกต้อง");
                 }
             }catch (Exception e){
                 e.printStackTrace();

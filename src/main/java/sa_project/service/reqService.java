@@ -109,6 +109,14 @@ public class reqService {
         statement.executeUpdate(query+num+";");
     }
 
+    public void updateRqStatus(String query,ReqForm rqUpdate) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        String num = "'"+rqUpdate.getRqNumber()+"'";
+        Statement statement = connectDBSales.createStatement();
+        statement.executeUpdate(query+num+";");
+    }
+
     public void addRqForm(ReqForm rqform) throws SQLException {
         DatabaseConnection dbConnect = new DatabaseConnection();
         Connection connectDBSales = dbConnect.getConnection();

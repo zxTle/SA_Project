@@ -23,6 +23,7 @@ import sa_project.model.*;
 import sa_project.service.reqService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -112,8 +113,6 @@ public class InventoryStockOutController {
                 rqselect = clickedReq;
                 prList = service.getProductList("SELECT RQ_item_num,Product_id,RQ_qty,Product_name,Description,Qty_onhand,(Qty_onhand-Rq_qty) AS amount FROM req_product_list NATURAL JOIN product_stocks WHERE RQ_no = "+ "'"+clickedReq.getRqNumber() + "'");
                 reqDetails.toFront();
-//                if(rqselect.getRqStatus().equals("Waiting")||rqselect.getRqStatus().equals("Deliveried")) {deliveryBtn.setDisable(true);}
-//                else {deliveryBtn.setDisable(false);}
                 rqNum.setText(clickedReq.getRqNumber());
                 orNum.setText(clickedReq.getOrderNum());
                 empName.setText(clickedReq.getEmpId()+" , "+clickedReq.getEmpName());
@@ -141,7 +140,7 @@ public class InventoryStockOutController {
 
         stage.show();
     }
-    @FXML private void handleDeliveryBtn(ActionEvent event){
+    @FXML private void handleDeliveryBtn(ActionEvent event) throws SQLException {
         if(!prList.checkIfEnough() && rqselect.getRqStatus().equals("Waiting")){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ไม่สามารถส่งสินค้าได้!");
@@ -155,10 +154,13 @@ public class InventoryStockOutController {
             alert.showAndWait();
         }
         else{
+            service.updateRqStatus("UPDATE req_forms SET RQ_Status = 'Deliveried' WHERE RQ_no = ",rqselect);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("สิ่งมอบสินค้าสำเร็จ!");
-            alert.setHeaderText("สิ่งมอบสินค้าของใบเบิกสินค้าหมายเลข " + rqselect.getRqNumber() + " สำเร็จ");
+            alert.setTitle("ส่งมอบสินค้าสำเร็จ!");
+            alert.setHeaderText("ส่งมอบสินค้าของใบเบิกสินค้าหมายเลข " + rqselect.getRqNumber() + " สำเร็จ");
             alert.showAndWait();
+            reqList.toFront();
+            initialize();
         }
     }
     @FXML private void handleSidemenu(ActionEvent menu) throws IOException {
