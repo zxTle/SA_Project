@@ -86,7 +86,7 @@ public class InventoryReceiveAndClaimController {
     @FXML private TableColumn<ProductDoc,String> productIn;
     @FXML private TableColumn<ProductDoc,String> desIn;
     @FXML private TableColumn<ProductDoc,Integer> qtyPr;
-    @FXML private TableColumn<ProductDoc,Integer> receiveIn;
+    @FXML private TableColumn<ProductDoc,String> receiveIn;
     @FXML private TableColumn<ProductDoc,Integer> scrapC;
 
 
@@ -234,9 +234,15 @@ public class InventoryReceiveAndClaimController {
             if(mouseEvent.getClickCount() == 2 && !prFormTable.getSelectionModel().getSelectedCells().isEmpty()) {
                 PrForm clickedIn = prFormTable.getSelectionModel().getSelectedItem();
                 prSelect = clickedIn;
-                prList = pr_service.getPrProductList("SELECT PR_item_num,PR_no,Product_id,PR_qty,Product_name,Description FROM PR_product_list NATURAL JOIN product_stocks WHERE PR_no ="+ "'"+ clickedIn.getPrNumber()+"'");
+                prList = pr_service.getPrProductList("SELECT PR_item_num,PR_no,Product_id,PR_qty,Product_name,Description, PR_qty AS in_amount " +
+                        "FROM PR_product_list NATURAL JOIN product_stocks WHERE PR_no ="+ "'"+ clickedIn.getPrNumber()+"'");
                 receivePage.toFront();
+                // เข้าหน้าโชวใบสั่งซื้อที่สถานะ Received และใบรับของ
                 if(prSelect.getPrStatus().equals("Received")) {
+                    scrapC.setText("เสีย");
+                    scrapC.setPrefWidth(79);
+                    receiveIn.setPrefWidth(131);
+
                     inConfirm.setDisable(true);
                     inNo.setText("เลขที่ใบสั่งซื้อ : " + prSelect.getPrNumber());
 //                    InList temp = in_service.getAllInForm("SELECT IN_no FROM in_forms WHERE PR_no = 'PR0003'");
@@ -246,35 +252,48 @@ public class InventoryReceiveAndClaimController {
 //                    prNo.setText("เลขที่ใบรับของ : " + (in_service.getInNoFromPrNo(prSelect.getPrNumber())).getInNum() );
 
                 }
+                // เข้าหน้าสร้างใบรับของ มีการบันทึกข้อมูลจาก pr_product_list ไปยัง in_product_list
                 else {
+                    inPdTb.setEditable(true);
                     inConfirm.setDisable(false);
-                    inNo.setText("เลขที่ใบรับของ : IN"+inNumFormat.format(inFormList.toList().size()+1));
+                    scrapC.setText("");
+                    receiveIn.setPrefWidth(200);
+                    inNo.setText("IN"+inNumFormat.format(inFormList.toList().size()+1));
                     prNo.setText("เลขที่ใบสั่งซื้อ : " + prSelect.getPrNumber());
-                    receiver.setText("ผู้รับของ : " + account.getName());
+                    receiver.setText(account.getName());
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy", new Locale("en"));
-                    inDate.setText("วันที่รับของ : " + (LocalDateTime.now().format(formatter)));
+                    inDate.setText(LocalDateTime.now().format(formatter));
+                    inDueDate.setText("วันกำหนดรับ : "+prSelect.getPrDueDate());
+
+                    ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
+                    itemIn.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
+                    productIn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+                    desIn.setCellValueFactory(new PropertyValueFactory<>("description"));
+                    qtyPr.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+                    receiveIn.setCellValueFactory(new PropertyValueFactory<>("receiveStr"));
+                    receiveIn.setCellFactory(TextFieldTableCell.forTableColumn());
+                    receiveIn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ProductDoc, String>>() {
+                                                  @Override
+                                                  public void handle(TableColumn.CellEditEvent<ProductDoc, String> event) {
+                                                      ProductDoc productDoc = event.getRowValue();
+                                                      System.out.println("จำนวนรับ = " + event.getNewValue());
+                                                      System.out.println("จำนวนรับ = " + productDoc);
+                                                      prList.toReceive(event.getRowValue().getItemNum(), event.getNewValue());
+                                                  }
+                                              });
+//                    scrapC.setCellValueFactory(new PropertyValueFactory<>("badQty"));
+                            inPdTb.setItems(productList);
                 }
                 //"IN"+inNumFormat.format(inFormList.toList().size()+1);
 //                prNo.setText("เลขที่ใบสั่งซื้อ : "+clickedIn.getPrNumber());
 
-                ObservableList<ProductDoc> productList = FXCollections.observableArrayList(prList.toList());
-                itemIn.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
-                productIn.setCellValueFactory(new PropertyValueFactory<>("productName"));
-                desIn.setCellValueFactory(new PropertyValueFactory<>("description"));
-                receiveIn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-//                receiveIn.setCellFactory(TextFieldTableCell.forTableColumn());
-//                receiveIn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ProductDoc, Integer>>() {
-//                    @Override
-//                    public void handle(TableColumn.CellEditEvent<ProductDoc, Integer> event) {
-//                        Stoke stroke =
-//                    }
-//                });
-                qtyPr.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-//                receiveIn.setCellValueFactory(new PropertyValueFactory<>("claimsReason"));
-//                scrapC.setCellValueFactory(new PropertyValueFactory<>("claimsReason1"));
-                inPdTb.setItems(productList);
+
             }
         }
+    }
+
+    @FXML public void handleInConfirm(ActionEvent actionEvent) throws SQLException {
+
     }
 
     @FXML private  void handleTop(ActionEvent topBtn) throws SQLException {

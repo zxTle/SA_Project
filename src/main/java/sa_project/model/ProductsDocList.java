@@ -26,4 +26,12 @@ public class ProductsDocList {
         }
         return text;
     }
+
+    public void toReceive (int inItem, String textField){
+        for(ProductDoc prDoc : productList) {
+            if(prDoc.getItemNum() == inItem) {
+                prDoc.setReceiveQty(Integer.valueOf(textField));
+            }
+        }
+    }
 }

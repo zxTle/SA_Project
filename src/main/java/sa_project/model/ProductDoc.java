@@ -10,6 +10,9 @@ public class ProductDoc {
     private int onHand;
     private int itemNumForecast;
     private String claimsReason;
+    private int receiveQty;
+    private String receiveStr = String.valueOf(receiveQty);
+    private int badQty;
 
     public ProductDoc(int itemNum, String productId, String productName, String description, int quantity, String productType, int onHand, int itemNumForecast, String claimsReason) {
         this.itemNum = itemNum;
@@ -21,6 +24,41 @@ public class ProductDoc {
         this.onHand = onHand;
         this.itemNumForecast = itemNumForecast;
         this.claimsReason = claimsReason;
+    }
+
+    public ProductDoc(int itemNum, String productId, String productName, String description, int quantity, int receiveQty) {
+        this.itemNum = itemNum;
+        this.productId = productId;
+        this.productName = productName;
+        this.description = description;
+        this.quantity = quantity;
+        this.receiveQty = receiveQty;
+//        this.receiveStr = receiveStr;
+//        this.badQty = badQty;
+    }
+
+    public String getReceiveStr() {
+        return receiveStr;
+    }
+
+    public void setReceiveStr(String receiveStr) {
+        this.receiveStr = receiveStr;
+    }
+
+    public int getReceiveQty() {
+        return receiveQty;
+    }
+
+    public void setReceiveQty(int receiveQty) {
+        this.receiveQty = receiveQty;
+    }
+
+    public int getBadQty() {
+        return badQty;
+    }
+
+    public void setBadQty(int badQty) {
+        this.badQty = badQty;
     }
 
     public String getClaimsReason() {

@@ -86,7 +86,27 @@ public class inService {
         return inFormResult;
     }
 
-//    public
+    public void addInForm(InForm inForm) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        String inNo ="'" + inForm.getInNum()+"'" ;
+        String inDate = "'" +inForm.getInDate()+"'" ;
+        String prNo = "'" +inForm.getPrNum()+"'" ;
+        String empId = "'" +inForm.getEmpId()+"'" ;
+        String toInsert ="("+inNo+","+inDate+","+prNo+","+empId+")";
+        String query = "INSERT INTO in_forms (IN_no, IN_date, PR_no, Emp_id) VALUES " +toInsert;
+        statement.executeUpdate(query);
+    }
+
+    public void addInList(String inNo,ProductsDocList products) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        String query = "INSERT INTO in_product_list (IN_item_num, RQ_no, Product_id, RQ_qty) VALUES "+ products.toInsert(inNo);
+        statement.executeUpdate(query);
+    }
+
 
 
 }

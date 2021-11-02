@@ -70,7 +70,10 @@ public class prService {
             String prName = queryResult.getString("Product_name");
             String des = queryResult.getString("Description");
             int qty = queryResult.getInt("PR_qty");
-            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",0,0,"");
+            int pdIn = queryResult.getInt("in_amount");
+//            int badP = queryResult.getInt("scrap_amount");
+//            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",0,0,"");
+            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, pdIn);
             products.addProduct(product);
         }
     }
