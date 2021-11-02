@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
+import sa_project.service.productService;
 import sa_project.service.reqService;
 
 import java.io.IOException;
@@ -57,6 +58,7 @@ public class InventoryStockOutController {
     @FXML private ChoiceBox<String> typeChoice;
     @FXML private Pane reqList,purchaseProduct,reqDetails;
     private reqService service;
+    private productService productService;
     private NumberFormat rqNumFormat = new DecimalFormat("0000");
     private ReqList rqList;
     private ReqForm rqselect;
@@ -68,6 +70,7 @@ public class InventoryStockOutController {
             @Override
             public void run() {
                 service = new reqService();
+                productService = new productService();
                 rqList = service.getRqList("SELECT RQ_no,RQ_date,RQ_due_date,Deliveried_date,RQ_status,OR_no,Emp_id,Emp_name FROM req_forms NATURAL JOIN employees");
                 usernameLabel.setText(account.getUsername());
                 nameLabel.setText(account.getName());
@@ -155,6 +158,7 @@ public class InventoryStockOutController {
         }
         else{
             service.updateRqStatus("UPDATE req_forms SET RQ_Status = 'Deliveried' WHERE RQ_no = ",rqselect);
+            productService.updateQtyStockFormReq(prList);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("ส่งมอบสินค้าสำเร็จ!");
             alert.setHeaderText("ส่งมอบสินค้าของใบเบิกสินค้าหมายเลข " + rqselect.getRqNumber() + " สำเร็จ");
