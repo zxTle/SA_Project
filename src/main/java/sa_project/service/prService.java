@@ -58,6 +58,34 @@ public class prService {
             products.addProduct(product);
         }
     }
+
+    private void readPrProductList(String query) throws SQLException {
+        DatabaseConnection dbConnect = new DatabaseConnection();
+        Connection connectDBSales = dbConnect.getConnection();
+        Statement statement = connectDBSales.createStatement();
+        ResultSet queryResult = statement.executeQuery(query);
+        while (queryResult.next()){
+            int itemNo = queryResult.getInt("PR_item_num");
+            String prId = queryResult.getString("Product_id");
+            String prName = queryResult.getString("Product_name");
+            String des = queryResult.getString("Description");
+            int qty = queryResult.getInt("PR_qty");
+            ProductDoc product = new ProductDoc(itemNo,prId,prName,des,qty, "",0,0,"");
+            products.addProduct(product);
+        }
+    }
+
+    public ProductsDocList getPrProductList(String query){
+        try {
+            products = new ProductsDocList();
+            readPrProductList(query);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return products;
+    }
+
+
     public ProductsDocList getProductList(String query){
         try {
             products = new ProductsDocList();

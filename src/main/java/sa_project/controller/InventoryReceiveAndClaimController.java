@@ -9,11 +9,13 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -232,7 +234,7 @@ public class InventoryReceiveAndClaimController {
             if(mouseEvent.getClickCount() == 2 && !prFormTable.getSelectionModel().getSelectedCells().isEmpty()) {
                 PrForm clickedIn = prFormTable.getSelectionModel().getSelectedItem();
                 prSelect = clickedIn;
-                prList = in_service.getProductList("SELECT PR_item_num,PR_no,Product_id,PR_qty,Product_name,Description FROM PR_product_list NATURAL JOIN product_stocks WHERE PR_no ="+ "'"+ clickedIn.getPrNumber()+"'");
+                prList = pr_service.getPrProductList("SELECT PR_item_num,PR_no,Product_id,PR_qty,Product_name,Description FROM PR_product_list NATURAL JOIN product_stocks WHERE PR_no ="+ "'"+ clickedIn.getPrNumber()+"'");
                 receivePage.toFront();
                 if(prSelect.getPrStatus().equals("Received")) {
                     inConfirm.setDisable(true);
@@ -250,7 +252,7 @@ public class InventoryReceiveAndClaimController {
                     prNo.setText("เลขที่ใบสั่งซื้อ : " + prSelect.getPrNumber());
                     receiver.setText("ผู้รับของ : " + account.getName());
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy", new Locale("en"));
-                    inDate.setText("วันที่ออกใบเบิก : " + (LocalDateTime.now().format(formatter)));
+                    inDate.setText("วันที่รับของ : " + (LocalDateTime.now().format(formatter)));
                 }
                 //"IN"+inNumFormat.format(inFormList.toList().size()+1);
 //                prNo.setText("เลขที่ใบสั่งซื้อ : "+clickedIn.getPrNumber());
@@ -259,9 +261,17 @@ public class InventoryReceiveAndClaimController {
                 itemIn.setCellValueFactory(new PropertyValueFactory<>("itemNum"));
                 productIn.setCellValueFactory(new PropertyValueFactory<>("productName"));
                 desIn.setCellValueFactory(new PropertyValueFactory<>("description"));
+                receiveIn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+//                receiveIn.setCellFactory(TextFieldTableCell.forTableColumn());
+//                receiveIn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<ProductDoc, Integer>>() {
+//                    @Override
+//                    public void handle(TableColumn.CellEditEvent<ProductDoc, Integer> event) {
+//                        Stoke stroke =
+//                    }
+//                });
                 qtyPr.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-                receiveIn.setCellValueFactory(new PropertyValueFactory<>("claimsReason"));
-                scrapC.setCellValueFactory(new PropertyValueFactory<>("claimsReason1"));
+//                receiveIn.setCellValueFactory(new PropertyValueFactory<>("claimsReason"));
+//                scrapC.setCellValueFactory(new PropertyValueFactory<>("claimsReason1"));
                 inPdTb.setItems(productList);
             }
         }
