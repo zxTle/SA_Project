@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +20,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sa_project.model.*;
@@ -292,7 +294,23 @@ public class InventoryReceiveAndClaimController {
         }
     }
 
-    @FXML public void handleInConfirm(ActionEvent actionEvent) throws SQLException {
+    @FXML public void handleInConfirm(ActionEvent actionEvent) throws SQLException, Exception {
+
+
+
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/PopUpClaim.fxml"));
+        root = loader.load();
+        PopUpClaimController popUpClaimController = loader.getController();
+        if(root!=null){
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.showAndWait();
+            initialize();
+        }
+
 
     }
 
