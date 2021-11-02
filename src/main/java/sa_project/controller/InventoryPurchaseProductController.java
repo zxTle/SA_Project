@@ -113,6 +113,8 @@ public class InventoryPurchaseProductController {
             prDue.getEditor().clear();
             typeChoice.setText("ชื่อสินค้า");
             orderNum.clear();
+            prTable.getItems().clear();
+
         }
         if(e.getSource() == AddBtn){
             ObservableList<ProductDoc> createPrList = FXCollections.observableArrayList(createList.toList());
@@ -142,38 +144,6 @@ public class InventoryPurchaseProductController {
                 typeChoice.setText("สินค้า");
             }
         }
-//        if(e.getSource() == createPr){
-//            if(prDue.getEditor().getText().equals("") && createList.toList().size()==0){
-//                alert1("");
-//            }
-//            else if(prDue.getEditor().getText().equals("") && createList.toList().size()!=0){
-//                alert1("วันที่");
-//            }
-//            else if(!(prDue.getEditor().getText().equals("")) && createList.toList().size()==0){
-//                alert1("สินค้า");
-//            }
-//            else if(prDue.getEditor().getText().equals("") && createList.toList().size()==0){
-//                alert1("สินค้า-วันที่");
-//            }
-//            else {
-//                String prNo = "PR"+prNumFormat.format(prList.toList().size()+1);
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("en"));
-//                String prDate = LocalDateTime.now().format(formatter);
-//                String dueDate = prDue.getValue().toString();
-//                PrForm createPr = new PrForm(prNo,prDate,"Waiting",dueDate,account.getUsername(), account.getName());
-//                prService.addPrForm(createPr);
-//                prService.addPrList(prNo,createList);
-//                showSuccess(prNo);
-//
-//                Stage stage = (Stage) createPr.getScene().getWindow();
-//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/StockOut.fxml"));
-//                stage.setScene(new Scene(loader.load(),1280,768));
-//                InventoryStockOutController controller = loader.getController();
-//                controller.setAccount(account);
-//
-//                stage.show();
-//            }
-//        }
     }
     @FXML private void handleCreatePrBtn(ActionEvent event) throws SQLException, IOException {
         if(prDue.getEditor().getText().equals("") && createList.toList().size()==0){
@@ -213,16 +183,16 @@ public class InventoryPurchaseProductController {
         alert.setTitle("ไม่สามารถสร้างใบขอสั่งซื้อได้!");
         alert.setHeaderText("กรุณาตรวจกรอกข้อมูลให้ครบถ้วน");
         if (message == "สินค้า"){
-            alert.setContentText("กรุณาเลือกสินค้าที่ต้องการเบิก");
+            alert.setContentText("กรุณาเลือกสินค้าที่ต้องการสั่งซื้อ");
         }
         else if(message == "วันที่"){
-            alert.setContentText("กรุณาเลือกวันนำส่ง");
+            alert.setContentText("กรุณาเลือกวันกำหนดรับ");
         }
         else if(message == "สินค้า-วันที่"){
-            alert.setContentText("กรุณาเลือกวันนำส่ง \n กรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
+            alert.setContentText("กรุณาเลือกวันกำหนดรับ\nกรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
         }
         else {
-            alert.setContentText("กรุณากรอกเลขออเดอร์\n กรุณาเลือกวันนำส่ง \n กรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
+            alert.setContentText("กรุณาเลือกวันกำหนดรับ\nกรุณาเพิ่มรายการสินค้าที่ต้องการเบิก");
         }
         alert.showAndWait();
     }
@@ -232,19 +202,19 @@ public class InventoryPurchaseProductController {
         alert.setTitle("ไม่สามารถเพิ่มสินค้าได้!");
         alert.setHeaderText("กรุณาตรวจกรอกข้อมูลให้ครบถ้วน");
         if (message == "สินค้า"){
-            alert.setContentText("กรุณาเลือกสินค้าที่จะขอเบิก");
+            alert.setContentText("กรุณาเลือกสินค้าที่จะสั่งซื้อ");
         }
         else if(message == "จำนวน"){
-            alert.setContentText("กรุณากรอกจำนวนที่จะขอเบิก");
+            alert.setContentText("กรุณากรอกจำนวนสินค้า");
         }
         else {
-            alert.setContentText("กรุณาเลือกสินค้าที่จะขอเบิก\n"+"กรุณากรอกจำนวนที่จะขอเบิก");
+            alert.setContentText("กรุณาเลือกสินค้าที่จะสั่งซื้อ\n"+"กรุณากรอกจำนวนสินค้า");
         }
         alert.showAndWait();
     }
     private void showSuccess(String prNum){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("สร้างใบขอสั่งซื้อสินค้าเรียบร้อย!");
+        alert.setTitle("สร้างใบขอสั่งซื้อสินค้าสำเร็จ!");
         alert.setHeaderText("สร้างใบขอสั่งซื้อสินค้าเลขที่ "+prNum+ " สำเร็จ");
         alert.showAndWait();
     }
